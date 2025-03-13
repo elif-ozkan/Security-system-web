@@ -9,3 +9,6 @@ Back End: .NET Entity Framework Core
 # Geliştirme Ortamları
 Visual Studio Code
 Visual Studio
+
+# Başlatmak için
+
