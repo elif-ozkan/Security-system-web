@@ -1,0 +1,58 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 50px;
+  background-color: #000000;
+  color: white;
+  position: fixed; /* Navbar'ı sabitler */
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000; /* Diğer elementlerin üstünde olmasını sağlar */
+}
+
+.navbar-logo h1 {
+  font-size: 24px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  color: #ffff;
+}
+
+.navbar-links {
+  list-style: none;
+  display: flex;
+}
+
+.navbar-links li {
+  margin: 0 15px;
+}
+
+.navbar-links a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.navbar-links a:hover {
+  color: #1abc9c;
+}
+
+.navbar-contact .contact-btn {
+  padding: 10px 20px;
+  background-color: #1abc9c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.navbar-contact .contact-btn:hover {
+  background-color: #16a085;
+}
+
+/* Navbar sabitlendiği için içerik navbar'ın altında kaybolmasın */
+.page-content {
+  margin-top: 80px; /* Navbar yüksekliği kadar boşluk bırak */
+}

@@ -1,0 +1,86 @@
+/* Temel Stil Ayarları */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #fff; /* Sayfa arka planını beyaz yapıyoruz */
+  color: #333; /* Yazı rengi koyu gri */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  text-align: center;
+  margin: 0;
+}
+
+/* Container için stil */
+.container {
+  width: 80%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-top: 40px; /* Sayfanın üst kısmına biraz boşluk ekliyoruz */
+}
+
+/* Başlık için stil */
+.title-container {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333; /* Başlık rengi koyu gri */
+  margin-bottom: 30px;
+  margin-top: 40px; /* Başlık ile üst kısmı arasına boşluk ekliyoruz */
+}
+
+/* Grid Container (Kartların düzeni) */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 20px; /* Kartlar ile başlık arasına boşluk ekliyoruz */
+}
+
+/* Kart stili */
+.card {
+  background-color: #fff; /* Kart arka planını beyaz yapıyoruz */
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Hafif gölge efekti */
+  transition: transform 0.3s ease;
+  border: 1px solid #e0e0e0; /* Kartlara ince bir sınır ekliyoruz */
+}
+
+.card:hover {
+  transform: translateY(-10px); /* Hover efekti */
+}
+
+.card-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #333; /* Başlık rengi koyu gri */
+}
+
+.card p {
+  font-size: 1rem;
+  color: #666; /* Paragraf rengi daha açık gri */
+  margin-bottom: 20px;
+}
+
+/* Buton stili */
+button {
+  background-color: #007bff; /* Mavi renk */
+  color: #fff; /* Beyaz yazı rengi */
+  border: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3; /* Buton hover rengi */
+}

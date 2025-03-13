@@ -1,0 +1,70 @@
+/* Genel Form Stili */
+.add-form-container {
+  width: 100%;
+  max-width: 800px; /* Formu genişlet */
+  margin: 20px auto;
+  padding: 25px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Başlık Stili */
+.add-form-title {
+  text-align: center;
+  color: #000; /* Daha koyu renk, daha belirgin */
+  font-size: 26px; /* Büyük font */
+  font-weight: bold;
+  margin-bottom: 20px; /* Daha fazla boşluk */
+  display: block; /* Gizli kalmasını önle */
+  visibility: visible; /* Eğer gizliyse görünür yap */
+}
+
+/* Form Alanı */
+.add-form-group {
+  margin-bottom: 15px;
+}
+
+/* Etiketler */
+.add-form-label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #555;
+}
+
+/* Input ve Select Kutuları */
+.add-form-input,
+.add-form-select {
+  width: 100%;
+  padding: 10px; /* Daha geniş */
+  font-size: 18px; /* Daha büyük yazı */
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+/* Input Focus */
+.add-form-input:focus,
+.add-form-select:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Buton */
+.add-form-button {
+  width: 100%;
+  padding: 12px;
+  font-size: 18px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+/* Buton Hover */
+.add-form-button:hover {
+  background-color: #0056b3;
+}

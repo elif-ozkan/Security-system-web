@@ -1,0 +1,24 @@
+.ekibimiz-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Ortalamak için */
+  justify-content: center;
+  padding: 2rem;
+}
+
+.ekibimiz-heading {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  color: #333;
+}
+
+.card-container {
+  display: flex;
+  justify-content: center;
+  gap: 2rem; /* Kartlar arasındaki boşluk */
+}
+
+.card {
+  margin: 1rem;
+}

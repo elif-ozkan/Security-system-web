@@ -1,0 +1,43 @@
+.pageContainer {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.mainTitle {
+  color: #2c3e50;
+  font-weight: bold;
+}
+
+.edrTitle {
+  color: #007bff;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 5px;
+}
+
+.networkTitle {
+  color: #28a745;
+  border-bottom: 2px solid #28a745;
+  padding-bottom: 5px;
+}
+
+.firewallTitle {
+  color: #dc3545;
+  border-bottom: 2px solid #dc3545;
+  padding-bottom: 5px;
+}
+
+.customCard {
+  border-radius: 10px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.customCard:hover {
+  transform: scale(1.05);
+}
+
+.emptyMessage {
+  text-align: center;
+  font-style: italic;
+  color: gray;
+}
