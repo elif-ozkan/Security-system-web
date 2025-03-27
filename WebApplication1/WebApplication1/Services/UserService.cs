@@ -5,23 +5,12 @@ using WebApplication1.Repository;
 
 namespace WebApplication1.Services
 {
-    // Kullanıcı Servisi Arayüzü
-    public interface IUserService
-    {
-        Task<IEnumerable<Users>> GetAllUsersAsync(); // Tüm kullanıcıları getir
-        Task<Users> GetUserByIdAsync(int id); // ID'ye göre kullanıcı getir
-        Task<Users> RegisterUserAsync(Users user); // Kullanıcı kaydet
-        Task<Users> AuthenticateUserAsync(string email, string password); // Kullanıcı giriş işlemi
-        Task UpdateUserAsync(Users user); // Kullanıcı güncelle
-        Task DeleteUserAsync(int id); // Kullanıcı sil
-    }
-
     // Kullanıcı Servisi
-    public class UserService : IUserService
+    public class UserService
     {
-        private readonly IUserRepository _userRepository;
+        private readonly UserRepository _userRepository;
 
-        public UserService(IUserRepository userRepository)
+        public UserService(UserRepository userRepository)
         {
             _userRepository = userRepository;
         }
@@ -32,13 +21,13 @@ namespace WebApplication1.Services
             return await _userRepository.GetAllUsersAsync();
         }
 
-        // ID'ye göre kullanıcı getir
+        // ID'ye göre kullanıcıyı getir
         public async Task<Users> GetUserByIdAsync(int id)
         {
             return await _userRepository.GetUserByIdAsync(id);
         }
 
-        // Kullanıcı kaydetme
+        // Yeni kullanıcı kaydet
         public async Task<Users> RegisterUserAsync(Users user)
         {
             // Şifre Hashleme işlemi veya başka işlemler burada yapılabilir
@@ -46,19 +35,19 @@ namespace WebApplication1.Services
             return user;
         }
 
-        // Kullanıcı güncelleme
+        // Kullanıcı güncelle
         public async Task UpdateUserAsync(Users user)
         {
             await _userRepository.UpdateUserAsync(user);
         }
 
-        // Kullanıcı silme
+        // Kullanıcıyı sil
         public async Task DeleteUserAsync(int id)
         {
             await _userRepository.DeleteUserAsync(id);
         }
 
-        // Kullanıcı kimlik doğrulama işlemi
+        // E-posta ve şifre doğrulama ile kullanıcı kimlik doğrulama işlemi
         public async Task<Users> AuthenticateUserAsync(string email, string password)
         {
             var user = await _userRepository.GetUserByEmailAsync(email);
@@ -70,5 +59,6 @@ namespace WebApplication1.Services
         }
     }
 }
+
 
 

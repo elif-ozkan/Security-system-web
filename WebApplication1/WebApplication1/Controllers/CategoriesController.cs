@@ -1,34 +1,54 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using WebApplication1.DbModels;
 using WebApplication1.Models;
+using WebApplication1.Services;
 
 namespace WebApplication1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CategoriesController:ControllerBase
+    public class CategoriesController : ControllerBase
     {
-        private readonly MyDbContext _dbContext;
+        private readonly CategoryService _categoryService;
 
-        public CategoriesController(MyDbContext dbContext)
+        public CategoriesController(CategoryService categoryService)
         {
-            _dbContext = dbContext;
+            _categoryService = categoryService;
         }
-        //Tüm kategoriler gelsin
+
+        // Tüm kategorileri getir
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Categories>>> GetCategories()
+        public async Task<List<Categories>> GetCategories()
         {
-            return await _dbContext.Categories.ToListAsync();
+            return await _categoryService.GetAllCategories();
         }
+
+        // ID'ye göre kategori getir
+        [HttpGet("{id}")]
+        public async Task<Categories> GetCategoryById(int id)
+        {
+            return await _categoryService.GetAllCategoryById(id);
+        }
+
+        // Yeni kategori ekle
         [HttpPost]
-
-        public async Task<ActionResult<Categories>> PostCategories(Categories categories)
+        public async Task<Categories> PostCategory(Categories categories)
         {
-            _dbContext.Categories.Add(categories);
-            await _dbContext.SaveChangesAsync();
-            return CreatedAtAction("GetCategories", new {id=categories.CategoryId}, categories); 
+            return await _categoryService.AddCategory(categories);
         }
 
+        // Kategori güncelle
+        [HttpPut]
+        public async Task<Categories> PutCategory(Categories categories)
+        {
+            return await _categoryService.UpdateCategories(categories);
+        }
+
+        // Kategori sil
+        [HttpDelete("{id}")]
+        public async Task DeleteCategory(int id)
+        {
+            await _categoryService.DeleteCategories(id);
+        }
     }
 }
+

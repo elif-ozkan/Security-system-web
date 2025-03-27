@@ -12,9 +12,10 @@ public partial class SecurityProducts
 
     public string ProductType { get; set; } = null!;
 
-    public DateOnly? LicenseStartDate { get; set; }
+    
+    public DateTime? LicenseStartDate { get; set; }
 
-    public DateOnly? LicenseEndDate { get; set; }
+    public DateTime? LicenseEndDate { get; set; }
 
     public int? CategoryId { get; set; }
 

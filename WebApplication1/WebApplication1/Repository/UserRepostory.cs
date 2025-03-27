@@ -3,20 +3,9 @@ using WebApplication1.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace WebApplication1.Repository  // 'Repostory' yerine 'Repository'
+namespace WebApplication1.Repository
 {
-    public interface IUserRepository  // 'IUserRepostory' yerine 'IUserRepository'
-    {
-        Task<IEnumerable<Users>> GetAllUsersAsync();  
-        Task<Users> GetUserByIdAsync(int id);  
-        Task AddUserAsync(Users user);
-        Task UpdateUserAsync(Users user);
-        Task DeleteUserAsync(int id);
-        Task<Users> GetUserByEmailAsync(string email);
-      
-    }
-
-    public class UserRepository : IUserRepository  
+    public class UserRepository
     {
         private readonly MyDbContext _dbContext;
 
@@ -25,42 +14,48 @@ namespace WebApplication1.Repository  // 'Repostory' yerine 'Repository'
             _dbContext = dbContext;
         }
 
+        // Tüm kullanıcıları getir
         public async Task<IEnumerable<Users>> GetAllUsersAsync()
         {
             return await _dbContext.Users.ToListAsync();
         }
 
+        // ID'ye göre kullanıcıyı getir
         public async Task<Users> GetUserByIdAsync(int id)
         {
-            return await _dbContext.Users.FindAsync(id);
+            return await _dbContext.Users.FindAsync(id);  // ID'ye göre kullanıcıyı bulur
         }
 
+        // Yeni kullanıcı ekle
         public async Task AddUserAsync(Users user)
         {
-            await _dbContext.Users.AddAsync(user);  // Asenkron ekleme işlemi
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.Users.AddAsync(user);  // Yeni kullanıcıyı ekler
+            await _dbContext.SaveChangesAsync();    // Değişiklikleri kaydeder
         }
 
+        // Kullanıcıyı güncelle
         public async Task UpdateUserAsync(Users user)
         {
-            _dbContext.Users.Update(user);  // `Entry(user).State = EntityState.Modified;` yerine Update() kullanımı daha temiz
-            await _dbContext.SaveChangesAsync();
+            _dbContext.Users.Update(user);  // Kullanıcıyı günceller
+            await _dbContext.SaveChangesAsync();  // Değişiklikleri kaydeder
         }
 
+        // Kullanıcıyı sil
         public async Task DeleteUserAsync(int id)
         {
             var user = await _dbContext.Users.FindAsync(id);
             if (user != null)
             {
-                _dbContext.Users.Remove(user);
-                await _dbContext.SaveChangesAsync();
+                _dbContext.Users.Remove(user);  // Kullanıcıyı siler
+                await _dbContext.SaveChangesAsync();  // Değişiklikleri kaydeder
             }
         }
+
+        // E-posta ile kullanıcıyı getir
         public async Task<Users> GetUserByEmailAsync(string email)
         {
-            return await _dbContext.Users.FirstOrDefaultAsync(u=>u.Email==email);
+            return await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == email);  // E-posta ile kullanıcıyı getir
         }
-
-
     }
 }
+

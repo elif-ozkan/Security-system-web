@@ -6,19 +6,8 @@ using System.Linq;
 
 namespace WebApplication1.Repository
 {
-    // Interface tanımlama
-    public interface IAssignmentRepository
-    {
-        Task<IEnumerable<Assignments>> GetAllAssignmentsAsync();
-        Task<Assignments> GetAssignmentsByIdAsync(int assignmentId);
-        Task<IEnumerable<Assignments>> GetAssignmentsByUserIdAsync(int userId);
-        Task AddAssignmentAsync(Assignments assignment);
-        Task UpdateAssignmentAsync(Assignments assignment);
-        Task DeleteAssignmentAsync(int assignmentId);
-    }
-
     // Repository sınıfı Interface dışında tanımlanmalı 
-    public class AssignmentRepository:IAssignmentRepository 
+    public class AssignmentRepository
     {
         private readonly MyDbContext _dbcontext;
 

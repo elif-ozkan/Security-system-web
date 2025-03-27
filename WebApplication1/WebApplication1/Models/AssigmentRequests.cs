@@ -12,15 +12,15 @@ public partial class AssigmentRequests
 
     public int? ComputerProductId { get; set; }
 
-    public DateOnly RequestDate { get; set; }
+    public DateTime RequestDate { get; set; }
 
     public string Status { get; set; } = null!;
 
     public string? RequestType { get; set; }
 
-    public DateOnly? RequestedReturnDate { get; set; }
+    public DateTime RequestedReturnDate { get; set; }
 
-    public DateOnly? ApprovalDate { get; set; }
+    public DateTime ApprovalDate { get; set; }
 
     public virtual ComputerProducts? ComputerProduct { get; set; }
 

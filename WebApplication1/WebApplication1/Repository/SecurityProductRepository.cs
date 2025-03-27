@@ -5,17 +5,8 @@ using System.Threading.Tasks;
 
 namespace WebApplication1.Repository
 {
-    // Interface tanımı
-    public interface ISecurityProductRepository
-    {
-        Task<IEnumerable<SecurityProducts>> GetAllSecurityProductsAsync();
-        Task<SecurityProducts> GetSecurityProductByIdAsync(int securityProductID);
-        Task AddSecurityProductsAsync(SecurityProducts securityProduct);
-        Task UpdateSecurityProductsAsync(SecurityProducts securityProduct);
-        Task DeleteSecurityProductsAsync(int securityProductID);
-    }
     //Repository sınıfı
-    public class SecurityProductRepository :ISecurityProductRepository
+    public class SecurityProductRepository
     {
         private readonly MyDbContext _dbContext;
 

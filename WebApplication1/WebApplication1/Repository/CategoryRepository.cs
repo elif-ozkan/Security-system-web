@@ -3,16 +3,7 @@ using WebApplication1.Models;
 
 namespace WebApplication1.Repository
 {
-    public interface ICategoryRepository
-    {
-        Task<IEnumerable<Categories>> GetAllCategoriesAsync();
-        Task<Categories> GetCategoryByIdAsync(int categoryId);
-        Task AddCategoryAsync(Categories category);
-        Task UpdateCategoryAsync(Categories category);
-        Task DeleteCategoryAsync(int categoryId);
-    }
-
-    public class CategoryRepository : ICategoryRepository
+    public class CategoryRepository 
     {
         private readonly MyDbContext _dbContext;
 
@@ -31,10 +22,24 @@ namespace WebApplication1.Repository
             return await _dbContext.Categories.FindAsync(categoryId);
         }
 
-        public async Task AddCategoryAsync(Categories category)
+        public async Task<bool> AddCategoryAsync(Categories category)
         {
-            _dbContext.Categories.Add(category);
+            // Aynı ID'ye sahip kategori var mı kontrol et
+          var exists = await _dbContext.Categories
+        .AnyAsync(c => c.CategoryId == category.CategoryId);
+
+            if (exists)
+            {
+                // Eğer varsa, güncelle veya hata ver
+                return false;
+            }
+
+            // Id'yi otomatik ata
+            category.CategoryId = 0; // Entity Framework'e otomatik ID ataması için
+
+            await _dbContext.Categories.AddAsync(category);
             await _dbContext.SaveChangesAsync();
+            return true;
         }
 
         public async Task UpdateCategoryAsync(Categories category)

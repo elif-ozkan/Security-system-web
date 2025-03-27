@@ -133,3 +133,5 @@ C:\Users\elifo\Downloads\WebApplication1\WebApplication1\obj\Debug\net8.0\refint
 C:\Users\elifo\Downloads\WebApplication1\WebApplication1\obj\Debug\net8.0\WebApplication1.pdb
 C:\Users\elifo\Downloads\WebApplication1\WebApplication1\obj\Debug\net8.0\WebApplication1.genruntimeconfig.cache
 C:\Users\elifo\Downloads\WebApplication1\WebApplication1\obj\Debug\net8.0\ref\WebApplication1.dll
+C:\Users\elifo\Downloads\WebApplication1\WebApplication1\bin\Debug\net8.0\BCrypt.Net-Next.dll
+C:\Users\elifo\Downloads\WebApplication1\WebApplication1\bin\Debug\net8.0\BouncyCastle.Crypto.dll

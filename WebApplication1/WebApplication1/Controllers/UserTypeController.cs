@@ -1,59 +1,110 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using WebApplication1.DbModels;
 using WebApplication1.Models;
-using Microsoft.AspNetCore.Mvc;
-
+using WebApplication1.Services;
 
 namespace WebApplication1.Controllers
 {
-    public class UserTypeController : ControllerBase
+    [Route("api/[controller]")]
+    [ApiController]
+    public class UserTypesController : ControllerBase
     {
-        private readonly MyDbContext _dbContext;
-        public UserTypeController(MyDbContext dbContext)
-        {
-            _dbContext = dbContext;
-        }
-        //Tüm kullanıcı Türlerini getir
-        // Tüm kullanıcı türlerini getir
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserTypes>>> GetUserTypes()
-        {
-            return await _dbContext.UserTypes.ToListAsync();
-        }
-        [HttpPost]
-        public async Task<ActionResult<UserTypes>> PostUserType(UserTypes userType)
-        {
-            _dbContext.UserTypes.Add(userType);
-            await _dbContext.SaveChangesAsync();
-            return CreatedAtAction("GetUserTypes", new { id = userType.UserTypeId }, userType);
-        }
-        //Kullanıcı Türünü Güncelle
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutUserType(int id,UserTypes userTypes)
-        {
-            if (id != userTypes.UserTypeId)
-            {
-                return BadRequest();
-            }
-            _dbContext.Entry(userTypes).State = EntityState.Modified;
-            await _dbContext.SaveChangesAsync();
-            return NoContent(); 
+        private readonly UserTypeService _userTypeService;
 
-        }
-        //Kullanıcı Türünü Sil
-        [HttpDelete]
-        public async Task<IActionResult> DeleteUserType(int id)
+        public UserTypesController(UserTypeService userTypeService)
         {
-            var userType = await _dbContext.UserTypes.FindAsync(id);
+            _userTypeService = userTypeService;
+        }
+
+        // GET: api/UserTypes
+        [HttpGet]
+        public async Task<ActionResult<List<UserTypes>>> GetAllUserTypes()
+        {
+            try
+            {
+                var userTypes = await _userTypeService.GetAllUserTypes();
+                return Ok(userTypes);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        // GET: api/UserTypes/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<UserTypes>> GetUserTypeById(int id)
+        {
+            try
+            {
+                var userType = await _userTypeService.GetAllUserById(id);
+
+                if (userType == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(userType);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        // POST: api/UserTypes
+        [HttpPost]
+        public async Task<ActionResult<UserTypes>> AddUserType([FromBody] UserTypes userType)
+        {
             if (userType == null)
             {
-                return NotFound();
+                return BadRequest("UserType cannot be null");
             }
 
-            _dbContext.UserTypes.Remove(userType);
-            await _dbContext.SaveChangesAsync();
-            return NoContent(); 
+            try
+            {
+                var result = await _userTypeService.AddUserType(userType);
+                return CreatedAtAction(nameof(GetUserTypeById), new { id = result.UserTypeId }, result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        // PUT: api/UserTypes/5
+        [HttpPut("{id}")]
+        public async Task<ActionResult<UserTypes>> UpdateUserType(int id, [FromBody] UserTypes userType)
+        {
+            if (userType == null || userType.UserTypeId != id)
+            {
+                return BadRequest("UserType data is invalid");
+            }
+
+            try
+            {
+                var updatedUserType = await _userTypeService.UpdateUserTypeAsync(userType);
+                return Ok(updatedUserType);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        // DELETE: api/UserTypes/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUserType(int id)
+        {
+            try
+            {
+                await _userTypeService.DeleteUserType(id);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
     }
 }
+

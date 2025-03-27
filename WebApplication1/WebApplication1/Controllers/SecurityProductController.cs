@@ -1,38 +1,87 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using WebApplication1.DbModels;
 using WebApplication1.Models;
+using WebApplication1.Services;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace WebApplication1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-
-    public class SecurityProductsController:ControllerBase
+    public class SecurityProductController : ControllerBase
     {
-        private readonly MyDbContext _dbContext;
+        private readonly SecurityProductService _securityProductService;
 
-        public SecurityProductsController(MyDbContext dbContext)
+        public SecurityProductController(SecurityProductService securityProductService)
         {
-            _dbContext = dbContext;
+            _securityProductService = securityProductService;
         }
-        //Tüm güvenlik ürünlerini getir
+
+        // Tüm güvenlik ürünlerini getir
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<SecurityProducts>>> GetSecurityProducts()
+        public async Task<ActionResult<IEnumerable<SecurityProducts>>> GetAllSecurityProducts()
         {
-            var securityProducts= await _dbContext.SecurityProducts.ToListAsync();
-            return Ok(securityProducts); 
-
+            var products = await _securityProductService.GetAllSecurityProductsAsync();
+            return Ok(products); // 200 OK ile döndürür
         }
+
+        // ID'ye göre güvenlik ürünü getir
+        [HttpGet("{id}")]
+        public async Task<ActionResult<SecurityProducts>> GetSecurityProductById(int id)
+        {
+            var product = await _securityProductService.GetSecurityProductByIdAsync(id);
+            if (product == null)
+            {
+                return NotFound(); // Eğer ürün bulunmazsa 404 döner
+            }
+
+            return Ok(product); // 200 OK ile döner
+        }
+
+        // Yeni güvenlik ürünü ekle
         [HttpPost]
-        public async Task<ActionResult<SecurityProducts>> PostSecurityProducts(SecurityProducts securityProducts)
+        public async Task<ActionResult<SecurityProducts>> AddSecurityProduct(SecurityProducts securityProduct)
         {
-            _dbContext.SecurityProducts.Add(securityProducts);
-              await _dbContext.SaveChangesAsync();
-            return CreatedAtAction("GetSecurityProducts", new {id=securityProducts.SecurityProductId}, securityProducts);
-    
+            if (securityProduct == null)
+            {
+                return BadRequest("Geçersiz ürün verisi."); // 400 Bad Request döner
+            }
+
+            var addedProduct = await _securityProductService.AddSecurityProductsAsync(securityProduct);
+            return CreatedAtAction(nameof(GetSecurityProductById), new { id = addedProduct.SecurityProductId }, addedProduct); // 201 Created döner
         }
 
+        // Güvenlik ürünü güncelle
+        [HttpPut("{id}")]
+        public async Task<ActionResult<SecurityProducts>> UpdateSecurityProduct(int id, SecurityProducts securityProduct)
+        {
+            if (id != securityProduct.SecurityProductId)
+            {
+                return BadRequest("Ürün ID'si eşleşmiyor."); // 400 Bad Request döner
+            }
 
+            var updatedProduct = await _securityProductService.UpdateSecurityProductsAsync(securityProduct);
+            if (updatedProduct == null)
+            {
+                return NotFound(); // Eğer ürün bulunmazsa 404 döner
+            }
+
+            return Ok(updatedProduct); // 200 OK ile döner
+        }
+
+        // Güvenlik ürününü sil
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteSecurityProduct(int id)
+        {
+            var product = await _securityProductService.GetSecurityProductByIdAsync(id);
+            if (product == null)
+            {
+                return NotFound(); // 404 Not Found döner
+            }
+
+            await _securityProductService.DeleteSecurityProductsAsync(id);
+            return NoContent(); // 204 No Content döner, başarılı bir silme işlemi sonrası içerik yok
+        }
     }
 }
+

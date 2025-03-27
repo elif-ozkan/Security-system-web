@@ -5,18 +5,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WebApplication1.Repository
 {
-    // Interface
-    public interface IComputerProducts
-    {
-        Task<IEnumerable<ComputerProducts>> GetProductsAsync();
-        Task<ComputerProducts> GetComputerProductByIdAsync(int computerProductId);
-        Task AddComputerProductsAsync(ComputerProducts computerProduct);
-        Task UpdateComputerProductsAsync(ComputerProducts computerProduct);
-        Task DeleteComputerProductsAsync(int computerProductId);
-    }
-
-    // Repository Sınıfı
-    public class ComputerProductsRepository : IComputerProducts
+   // Repository Sınıfı
+    public class ComputerProductsRepository
     {
         private readonly MyDbContext _dbContext;
 
