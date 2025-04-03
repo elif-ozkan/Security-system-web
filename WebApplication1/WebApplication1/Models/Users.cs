@@ -21,6 +21,6 @@ public partial class Users
     public virtual ICollection<AssigmentRequests> AssigmentRequests { get; set; } = new List<AssigmentRequests>();
 
     public virtual ICollection<Assignments> Assignments { get; set; } = new List<Assignments>();
-
-    public virtual UserTypes? UserType { get; set; }
+    
+    public virtual UserTypes? UserType { get; set; } 
 }

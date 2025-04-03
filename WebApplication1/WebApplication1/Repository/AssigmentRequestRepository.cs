@@ -27,6 +27,7 @@ namespace WebApplication1.Repository
         {
             return await _context.AssigmentRequests.Include(a => a.User)  // User tablosunu da dahil etmek için
                                                      .Include(a => a.ComputerProduct) // ComputerProduct tablosunu dahil edebiliriz.
+                                                     .Include(a=>a.SecurityProduct)
                                                      .ToListAsync();
         }
 
@@ -35,6 +36,7 @@ namespace WebApplication1.Repository
         {
             return await _context.AssigmentRequests.Include(a => a.User)
                                                      .Include(a => a.ComputerProduct)
+                                                     .Include(a => a.SecurityProduct)
                                                      .FirstOrDefaultAsync(a => a.RequestId == requestId);
         }
 

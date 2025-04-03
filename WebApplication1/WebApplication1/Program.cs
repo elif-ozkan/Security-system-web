@@ -26,6 +26,11 @@ builder.Services.AddScoped<SecurityProductRepository>();
 builder.Services.AddScoped<SecurityProductService>();
 builder.Services.AddScoped<UserTypeRepository>();
 builder.Services.AddScoped<UserTypeService>();
+builder.Services.AddScoped<SecurityProductAssigmentRepository>();
+builder.Services.AddScoped<SecurityProductAssigmentService>();
+builder.Services.AddScoped<ComputerProductAssigmentRepository>();
+builder.Services.AddScoped<ComputerProductAssigmentService>();
+
 
 var app = builder.Build();
 

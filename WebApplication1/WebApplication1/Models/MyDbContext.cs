@@ -28,6 +28,10 @@ public partial class MyDbContext : DbContext
     public virtual DbSet<UserTypes> UserTypes { get; set; }
 
     public virtual DbSet<Users> Users { get; set; }
+    public virtual DbSet<ComputerProductAssigment> ComputerProductAssigments { get; set; }
+    public virtual DbSet<SecurityProductAssigment> SecurityProductAssigments { get; set; }
+    
+    
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
@@ -183,6 +187,56 @@ public partial class MyDbContext : DbContext
                 .HasForeignKey(d => d.UserTypeId)
                 .HasConstraintName("users_user_type_id_fkey");
         });
+        //ComputerProductAssigments Tablosu
+        // ComputerProductAssignment tablosu için yapılandırma
+        modelBuilder.Entity<ComputerProductAssigment>(entity =>
+        {
+            // Primary Key
+            entity.HasKey(c => c.AssignmentId);
+
+            // İlişkiler (Foreign Key)
+            entity.HasOne(c => c.ComputerProduct)
+                  .WithMany()  // Bir bilgisayar ürünü birden fazla atama alabilir
+                  .HasForeignKey(c => c.ComputerProductId)
+                  .OnDelete(DeleteBehavior.Restrict);  // Silme kısıtlaması
+
+            entity.HasOne(c => c.User)
+                  .WithMany()  // Bir kullanıcı birden fazla atama alabilir
+                  .HasForeignKey(c => c.UserId)
+                  .OnDelete(DeleteBehavior.Restrict);  // Silme kısıtlaması
+
+            // Kolonlar için veri türü ve kısıtlamalar
+            entity.Property(c => c.AssignmentDate)
+                  .IsRequired();  // AssignmentDate zorunlu
+
+            entity.Property(c => c.ReturnDate)
+                  .IsRequired(false);  // ReturnDate nullable
+        });
+        modelBuilder.Entity<SecurityProductAssigment>(entity =>
+        {
+            // Primary Key
+            entity.HasKey(s => s.AssignmentId);
+
+            // Foreign Key İlişkileri
+            entity.HasOne(s => s.SecurityProduct)
+                  .WithMany()  // Bir security product birden fazla atama alabilir
+                  .HasForeignKey(s => s.SecurityProductId)
+                  .OnDelete(DeleteBehavior.Restrict);  // Silme kısıtlaması
+
+            entity.HasOne(s => s.User)
+                  .WithMany()  // Bir kullanıcı birden fazla atama alabilir
+                  .HasForeignKey(s => s.UserId)
+                  .OnDelete(DeleteBehavior.Restrict);  // Silme kısıtlaması
+
+            // Kolonlar için veri türü ve kısıtlamalar
+            entity.Property(s => s.AssignmentDate)
+                  .IsRequired();  // AssignmentDate zorunlu
+
+            entity.Property(s => s.ReturnDate)
+                  .IsRequired(false);  // ReturnDate nullable
+        });
+
+
 
         OnModelCreatingPartial(modelBuilder);
     }

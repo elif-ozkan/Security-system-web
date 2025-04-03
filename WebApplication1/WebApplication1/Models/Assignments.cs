@@ -9,6 +9,7 @@ public partial class Assignments
     [Key] public int AssignmentId { get; set; }
 
     public int? ComputerProductId { get; set; }
+    public int? SecurityProductId { get; set; }
 
     public int? UserId { get; set; }
 
@@ -17,6 +18,7 @@ public partial class Assignments
     public DateOnly? ReturnDate { get; set; }
 
     public virtual ComputerProducts? ComputerProduct { get; set; }
+    public virtual SecurityProducts? SecurityProduct { get; set; }
 
     public virtual Users? User { get; set; }
 }

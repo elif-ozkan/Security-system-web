@@ -11,6 +11,7 @@ public partial class AssigmentRequests
     public int? UserId { get; set; }
 
     public int? ComputerProductId { get; set; }
+    public int? SecurityProductId {  get; set; }
 
     public DateTime RequestDate { get; set; }
 
@@ -23,6 +24,7 @@ public partial class AssigmentRequests
     public DateTime ApprovalDate { get; set; }
 
     public virtual ComputerProducts? ComputerProduct { get; set; }
+    public virtual SecurityProducts? SecurityProduct { get; set; }
 
     public virtual Users? User { get; set; }
 }

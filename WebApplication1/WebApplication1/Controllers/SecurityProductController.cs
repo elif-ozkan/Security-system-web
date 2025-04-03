@@ -52,7 +52,7 @@ namespace WebApplication1.Controllers
         }
 
         // Güvenlik ürünü güncelle
-        [HttpPut("{id}")]
+        [HttpPut("{id:int}")]
         public async Task<ActionResult<SecurityProducts>> UpdateSecurityProduct(int id, SecurityProducts securityProduct)
         {
             if (id != securityProduct.SecurityProductId)
@@ -70,7 +70,7 @@ namespace WebApplication1.Controllers
         }
 
         // Güvenlik ürününü sil
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         public async Task<ActionResult> DeleteSecurityProduct(int id)
         {
             var product = await _securityProductService.GetSecurityProductByIdAsync(id);

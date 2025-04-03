@@ -53,7 +53,7 @@ CREATE TABLE security_products (
     --FOREIGN KEY (category_id) REFERENCES categories(category_id)
 --);
 
--- Assignments
+-- Assignments(2 ayrı assigment tablosu oluşturulucak ve request için )
 CREATE TABLE assignments (
     assignment_id SERIAL PRIMARY KEY,
     computer_product_id INT,
@@ -62,6 +62,25 @@ CREATE TABLE assignments (
     return_date DATE,
     FOREIGN KEY (computer_product_id) REFERENCES computer_products(computer_product_id),
     FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+CREATE TABLE computer_product_assigments(
+    assignment_id SERIAL PRIMARY KEY,
+    computer_product_id INT,
+    user_id INT,
+    assignment_date DATE,
+    return_date DATE,
+    FOREIGN KEY(computer_product_id) REFERENCES computer_products(computer_product_id),
+    FOREIGN KEY(user_id) REFERENCES users(user_id)
+);
+
+CREATE TABLE security_product_assigments(
+    assignment_id SERIAL PRIMARY KEY,
+    security_product_id INT,
+    user_id INT,
+    assignment_date DATE,
+    return_date DATE,
+    FOREIGN KEY(security_product_id) REFERENCES security_products(security_product_id),
+    FOREIGN KEY(user_id) REFERENCES users(user_id)
 );
 
 CREATE TABLE assigment_requests(){
@@ -76,6 +95,7 @@ CREATE TABLE assigment_requests(){
     FOREIGN KEY (user_id) REFERENCES users(user_id),
     FOREIGN KEY (computer_product_id) REFERENCES computer_products(computer_product_id)
 }
+
 
 
 

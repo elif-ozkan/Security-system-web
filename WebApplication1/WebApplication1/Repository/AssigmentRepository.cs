@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace WebApplication1.Repository
 {
-    // Repository sınıfı Interface dışında tanımlanmalı 
+    
     public class AssignmentRepository
     {
         private readonly MyDbContext _dbcontext;
@@ -21,6 +21,7 @@ namespace WebApplication1.Repository
             return await _dbcontext.Assignments
                 .Include(a => a.User)
                 .Include(a => a.ComputerProduct)
+                .Include(a=>a.SecurityProduct)
                 .ToListAsync();
         }
 
@@ -37,6 +38,7 @@ namespace WebApplication1.Repository
             return await _dbcontext.Assignments
                 .Include(a => a.User)
                 .Include(a => a.ComputerProduct)
+                .Include(a => a.SecurityProduct)
                 .Where(a => a.UserId == userId)
                 .ToListAsync();
         }
