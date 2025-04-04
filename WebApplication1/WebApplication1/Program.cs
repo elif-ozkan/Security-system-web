@@ -31,6 +31,18 @@ builder.Services.AddScoped<SecurityProductAssigmentService>();
 builder.Services.AddScoped<ComputerProductAssigmentRepository>();
 builder.Services.AddScoped<ComputerProductAssigmentService>();
 
+//CORS Politikası kısmı
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowLocalhost",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:5173") 
+                  .AllowAnyMethod()
+                  .AllowAnyHeader();
+        });
+});
+
 
 var app = builder.Build();
 
@@ -44,6 +56,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+app.UseCors("AllowLocalhost"); //CORS Politikası aktif
 
 app.MapControllers();
 
