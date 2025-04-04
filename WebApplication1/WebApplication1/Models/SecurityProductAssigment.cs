@@ -1,6 +1,6 @@
 ﻿namespace WebApplication1.Models
 {
-    public class SecurityProductAssigment
+    public class SecurityProductAssigments 
     {
         public int AssignmentId { get; set; }
         public int SecurityProductId { get; set; }
@@ -10,6 +10,6 @@
 
         // Navigational Properties
         public virtual SecurityProducts SecurityProduct { get; set; }
-        public virtual Users User { get; set; }
+        public virtual Users User { get; set; } 
     }
 }

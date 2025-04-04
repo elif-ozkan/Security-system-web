@@ -15,7 +15,7 @@ namespace WebApplication1.Repository
         }
 
         // Kullanıcı tüm bilgisayar siparişlerini getirir
-        public async Task<List<ComputerProductAssigment>> GetAllComputerProductAssigmentsAsync()
+        public async Task<List<ComputerProductAssigments>> GetAllComputerProductAssigmentsAsync()
         {
             return await _context.ComputerProductAssigments
                 .Include(ca => ca.ComputerProduct) // Bilgisayar ürünü bilgilerini de getir
@@ -32,13 +32,13 @@ namespace WebApplication1.Repository
                 .ToListAsync();
         }
         //Kullanıcı assigment ekler
-        public async Task AddAsync(ComputerProductAssigment computerProductsAssigment)
+        public async Task AddAsync(ComputerProductAssigments computerProductsAssigment)
         {
             await _context.ComputerProductAssigments.AddAsync(computerProductsAssigment);
             await _context.SaveChangesAsync();
         }
         //Kullanıcı Assigment günceller
-        public async Task UpdateAsync(ComputerProductAssigment computerProductAssigment)
+        public async Task UpdateAsync(ComputerProductAssigments computerProductAssigment)
         {
              _context.ComputerProductAssigments.Update(computerProductAssigment);
               await _context.SaveChangesAsync();

@@ -23,4 +23,5 @@ public partial class ComputerProducts
     public virtual ICollection<Assignments> Assignments { get; set; } = new List<Assignments>();
 
     public virtual Categories? Category { get; set; }
+    public ICollection<ComputerProductAssigments> ComputerProductAssigments { get; set; }= new List<ComputerProductAssigments>();
 }

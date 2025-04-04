@@ -16,7 +16,7 @@ namespace WebApplication1.Services
         }
 
         // Tüm güvenlik ürün siparişlerini getir
-        public async Task<ActionResult<List<SecurityProductAssigment>>> GetAllSecurityProductAssigmentsAsync()
+        public async Task<ActionResult<List<SecurityProductAssigments>>> GetAllSecurityProductAssigmentsAsync()
         {
             var result = await _repository.GetAllSecurityProductAssigmentsAsync();
             if (result == null || result.Count == 0)
@@ -27,7 +27,7 @@ namespace WebApplication1.Services
         }
 
         // Güvenlik ürünü siparişini ID ile getir
-        public async Task<ActionResult<SecurityProductAssigment>> GetSecurityProductByIdAssigmentAsync(int securityProductId)
+        public async Task<ActionResult<SecurityProductAssigments>> GetSecurityProductByIdAssigmentAsync(int securityProductId)
         {
             var result = await _repository.GetSecurityProductByIdAssigmentAsync(securityProductId);
             if (result == null)
@@ -38,7 +38,7 @@ namespace WebApplication1.Services
         }
 
         // Yeni güvenlik ürünü siparişi ekle
-        public async Task<ActionResult> AddSecurityProductAssigmentAsync(SecurityProductAssigment securityProductAssigment)
+        public async Task<ActionResult> AddSecurityProductAssigmentAsync(SecurityProductAssigments securityProductAssigment)
         {
             try
             {
@@ -52,7 +52,7 @@ namespace WebApplication1.Services
         }
 
         // Güvenlik ürünü siparişi güncelle
-        public async Task<ActionResult> UpdateSecurityAssigmentAsync(SecurityProductAssigment securityProductAssigment, int securityProductId)
+        public async Task<ActionResult> UpdateSecurityAssigmentAsync(SecurityProductAssigments securityProductAssigment, int securityProductId)
         {
             var updateResult = await _repository.UpdateSecurityAssigmentAsync(securityProductAssigment, securityProductId);
             if (!updateResult)

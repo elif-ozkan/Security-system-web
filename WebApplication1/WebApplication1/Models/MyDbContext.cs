@@ -28,8 +28,8 @@ public partial class MyDbContext : DbContext
     public virtual DbSet<UserTypes> UserTypes { get; set; }
 
     public virtual DbSet<Users> Users { get; set; }
-    public virtual DbSet<ComputerProductAssigment> ComputerProductAssigments { get; set; }
-    public virtual DbSet<SecurityProductAssigment> SecurityProductAssigments { get; set; }
+    public virtual DbSet<ComputerProductAssigments> ComputerProductAssigments { get; set; }
+    public virtual DbSet<SecurityProductAssigments> SecurityProductAssigments { get; set; }
     
     
 
@@ -189,51 +189,71 @@ public partial class MyDbContext : DbContext
         });
         //ComputerProductAssigments Tablosu
         // ComputerProductAssignment tablosu için yapılandırma
-        modelBuilder.Entity<ComputerProductAssigment>(entity =>
+        modelBuilder.Entity<ComputerProductAssigments>(entity =>
         {
             // Primary Key
             entity.HasKey(c => c.AssignmentId);
+            entity.ToTable("computer_product_assigments");
+
+            // Kolon adı eşlemeleri
+            entity.Property(c => c.AssignmentId)
+                  .HasColumnName("assignment_id");
+            entity.Property(c => c.ComputerProductId)
+                  .HasColumnName("computer_product_id");
+            entity.Property(c => c.UserId)
+                  .HasColumnName("user_id");
+            entity.Property(c => c.AssignmentDate)
+                  .HasColumnName("assignment_date")
+                  .IsRequired();
+            entity.Property(c => c.ReturnDate)
+                  .HasColumnName("return_date")
+                  .IsRequired(false);
 
             // İlişkiler (Foreign Key)
             entity.HasOne(c => c.ComputerProduct)
-                  .WithMany()  // Bir bilgisayar ürünü birden fazla atama alabilir
+                  .WithMany(cp => cp.ComputerProductAssigments)  // ComputerProducts modelinde tanımlı koleksiyon
                   .HasForeignKey(c => c.ComputerProductId)
-                  .OnDelete(DeleteBehavior.Restrict);  // Silme kısıtlaması
+                  .OnDelete(DeleteBehavior.Restrict);
 
             entity.HasOne(c => c.User)
-                  .WithMany()  // Bir kullanıcı birden fazla atama alabilir
+                  .WithMany(u => u.ComputerProductAssigments)  // Users modelinde tanımlı koleksiyon
                   .HasForeignKey(c => c.UserId)
-                  .OnDelete(DeleteBehavior.Restrict);  // Silme kısıtlaması
-
-            // Kolonlar için veri türü ve kısıtlamalar
-            entity.Property(c => c.AssignmentDate)
-                  .IsRequired();  // AssignmentDate zorunlu
-
-            entity.Property(c => c.ReturnDate)
-                  .IsRequired(false);  // ReturnDate nullable
+                  .OnDelete(DeleteBehavior.Restrict);
         });
-        modelBuilder.Entity<SecurityProductAssigment>(entity =>
+        modelBuilder.Entity<SecurityProductAssigments>(entity =>
         {
             // Primary Key
             entity.HasKey(s => s.AssignmentId);
+            entity.ToTable("security_product_assigments");
 
             // Foreign Key İlişkileri
-            entity.HasOne(s => s.SecurityProduct)
-                  .WithMany()  // Bir security product birden fazla atama alabilir
+            entity.HasOne(s => s.SecurityProduct)  // Güncellenmiş navigation property: tekil "SecurityProduct"
+                  .WithMany(p => p.SecurityProductAssigments)  // SecurityProducts modelinde koleksiyon tanımlı
                   .HasForeignKey(s => s.SecurityProductId)
                   .OnDelete(DeleteBehavior.Restrict);  // Silme kısıtlaması
 
             entity.HasOne(s => s.User)
-                  .WithMany()  // Bir kullanıcı birden fazla atama alabilir
+                  .WithMany(u => u.SecurityProductAssigments)  // Users modelinde koleksiyon tanımlı olmalı
                   .HasForeignKey(s => s.UserId)
                   .OnDelete(DeleteBehavior.Restrict);  // Silme kısıtlaması
 
-            // Kolonlar için veri türü ve kısıtlamalar
+            // Sütun Adı Eşlemesi ve Kolon Ayarları
+            entity.Property(s => s.AssignmentId)
+                  .HasColumnName("assignment_id");
+
+            entity.Property(s => s.SecurityProductId)
+                  .HasColumnName("security_product_id");
+
+            entity.Property(s => s.UserId)
+                  .HasColumnName("user_id");
+
             entity.Property(s => s.AssignmentDate)
-                  .IsRequired();  // AssignmentDate zorunlu
+                  .HasColumnName("assignment_date")
+                  .IsRequired();
 
             entity.Property(s => s.ReturnDate)
-                  .IsRequired(false);  // ReturnDate nullable
+                  .HasColumnName("return_date")
+                  .IsRequired(false);
         });
 
 

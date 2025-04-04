@@ -13,26 +13,26 @@ namespace WebApplication1.Repository
         }
        
         //Tüm güvenlik ürün siparişlerini getir
-        public async Task<List<SecurityProductAssigment>> GetAllSecurityProductAssigmentsAsync()
+        public async Task<List<SecurityProductAssigments>> GetAllSecurityProductAssigmentsAsync()
         {
             return await _context.SecurityProductAssigments.ToListAsync();
         }
 
         //Tüm güvenlik ürünü siparişlerini ID numarasına göre getir
-        public async Task<SecurityProductAssigment> GetSecurityProductByIdAssigmentAsync(int securtiyProductId)
+        public async Task<SecurityProductAssigments> GetSecurityProductByIdAssigmentAsync(int securtiyProductId)
         {
             return await _context.SecurityProductAssigments.FirstOrDefaultAsync(spd=>spd.SecurityProductId==securtiyProductId);
 
         }
         //Güvenlik ürünü sipariş ekle yeni
-        public async Task AddSecurityProductAssigmentAsync(SecurityProductAssigment securityProductAssigment)
+        public async Task AddSecurityProductAssigmentAsync(SecurityProductAssigments securityProductAssigment)
         {
              await _context.AddAsync(securityProductAssigment);
              await _context.SaveChangesAsync();
         }
 
         //Güvenlik ürünü siparişi güncelle
-        public async Task<bool> UpdateSecurityAssigmentAsync(SecurityProductAssigment securityProductAssigment, int securtiyProductId)
+        public async Task<bool> UpdateSecurityAssigmentAsync(SecurityProductAssigments securityProductAssigment, int securtiyProductId)
         {
             // Eğer gelen securityProductId ile assigment'ın Id'si eşleşmiyorsa, hata döndürüyoruz
             if (securityProductAssigment.SecurityProductId!= securtiyProductId)

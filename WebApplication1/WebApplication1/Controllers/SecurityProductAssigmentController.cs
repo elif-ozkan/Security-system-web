@@ -16,27 +16,27 @@ namespace WebApplication1.Controllers
 
         //Tüm ürünleri getir
         [HttpGet]
-        public async Task<ActionResult<List<SecurityProductAssigment>>> GetAllSecurityProductAssigments()
+        public async Task<ActionResult<List<SecurityProductAssigments>>> GetAllSecurityProductAssigments()
         {
             return await _service.GetAllSecurityProductAssigmentsAsync();
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<SecurityProductAssigment>> GetSecurityProductByIdAsync(int id)
+        public async Task<ActionResult<SecurityProductAssigments>> GetSecurityProductByIdAsync(int id)
         {
             return await _service.GetSecurityProductByIdAssigmentAsync(id);
         }
 
         [HttpPost]
 
-        public async Task<ActionResult<SecurityProductAssigment>> AddSecurityProductAssigmentAsync(SecurityProductAssigment securityProductAssigment)
+        public async Task<ActionResult<SecurityProductAssigments>> AddSecurityProductAssigmentAsync(SecurityProductAssigments securityProductAssigment)
         {
             return await _service.AddSecurityProductAssigmentAsync(securityProductAssigment);
 
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult> UpdateSecurityProductAssigmentAsync(int id, [FromBody] SecurityProductAssigment securityProductAssigment)
+        public async Task<ActionResult> UpdateSecurityProductAssigmentAsync(int id, [FromBody] SecurityProductAssigments securityProductAssigment)
         {
             return await _service.UpdateSecurityAssigmentAsync(securityProductAssigment, id);
         }

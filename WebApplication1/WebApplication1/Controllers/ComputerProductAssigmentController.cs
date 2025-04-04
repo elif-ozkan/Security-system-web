@@ -18,7 +18,7 @@ namespace WebApplication1.Controllers
         //Kullanıcının tüm bilgisayar siparişlerini getir
         [HttpGet]
 
-        public async Task<ActionResult<List<ComputerProductAssigment>>> GetAllProductAssigmentAsync(ComputerProductAssigment computerProductAssigment)
+        public async Task<ActionResult<List<ComputerProductAssigments>>> GetAllProductAssigmentAsync(ComputerProductAssigments computerProductAssigment)
         {
             await _service.GetAllAssigmentAsync();
             return Ok(computerProductAssigment);
@@ -26,7 +26,7 @@ namespace WebApplication1.Controllers
 
         // ID'ye göre sipariş bilgisayar ürünü getir
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<ComputerProductAssigment>> GetAllProductAssigmentByIdAsync(int id)
+        public async Task<ActionResult<ComputerProductAssigments>> GetAllProductAssigmentByIdAsync(int id)
         {
             if (id < 0)
             {
@@ -45,7 +45,7 @@ namespace WebApplication1.Controllers
 
         //Yeni sipariş bilgisayar ürünü seçilir
         [HttpPost]
-        public async Task<ActionResult<ComputerProductAssigment>> AddComputerProductAssigment(ComputerProductAssigment computerProductAssigment)
+        public async Task<ActionResult<ComputerProductAssigments>> AddComputerProductAssigment(ComputerProductAssigments computerProductAssigment)
         {
             if (computerProductAssigment == null)
             {
@@ -57,7 +57,7 @@ namespace WebApplication1.Controllers
 
         //Sipariş ürün bilgisi güncellenir
         [HttpPut("{id:int}")]
-        public async Task<ActionResult<ComputerProductAssigment>> UpdateComputerProductAssigment(int id ,ComputerProductAssigment computerProductAssigment)
+        public async Task<ActionResult<ComputerProductAssigments>> UpdateComputerProductAssigment(int id ,ComputerProductAssigments computerProductAssigment)
         {
             if (computerProductAssigment == null)
             {

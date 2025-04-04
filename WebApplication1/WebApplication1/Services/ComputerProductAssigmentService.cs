@@ -11,7 +11,7 @@ namespace WebApplication1.Services
         {
             _repository = repository;
         }
-        public async Task<List<ComputerProductAssigment>> GetAllAssigmentAsync()
+        public async Task<List<ComputerProductAssigments>> GetAllAssigmentAsync()
         {
             return await _repository.GetAllComputerProductAssigmentsAsync();
         }
@@ -22,13 +22,13 @@ namespace WebApplication1.Services
             return await _repository.GetAssignmentsByUserIdAsync(userid);
         }
 
-        public async Task<ComputerProductAssigment> AddAsync(ComputerProductAssigment computerProductAssigment)
+        public async Task<ComputerProductAssigments> AddAsync(ComputerProductAssigments computerProductAssigment)
         {
             await _repository.AddAsync(computerProductAssigment);
             return computerProductAssigment;
         }
 
-        public async Task<bool> UpdateAsync(ComputerProductAssigment entity)
+        public async Task<bool> UpdateAsync(ComputerProductAssigments entity)
         {
             if(entity!= null)
             {

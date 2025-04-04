@@ -20,4 +20,5 @@ public partial class SecurityProducts
     public int? CategoryId { get; set; }
 
     public virtual Categories? Category { get; set; }
+    public ICollection<SecurityProductAssigments> SecurityProductAssigments { get; set; }= new List<SecurityProductAssigments>();
 }

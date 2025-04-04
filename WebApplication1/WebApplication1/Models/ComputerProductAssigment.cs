@@ -1,6 +1,6 @@
 ﻿namespace WebApplication1.Models
 {
-    public class ComputerProductAssigment
+    public class ComputerProductAssigments
     {
         public int AssignmentId { get; set; }
         public int ComputerProductId { get; set; }
