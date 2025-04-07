@@ -3,6 +3,7 @@ using WebApplication1.Models;
 using WebApplication1.Services;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using WebApplication1.ViewModels;
 
 namespace WebApplication1.Controllers
 {
@@ -11,6 +12,7 @@ namespace WebApplication1.Controllers
     public class SecurityProductController : ControllerBase
     {
         private readonly SecurityProductService _securityProductService;
+        
 
         public SecurityProductController(SecurityProductService securityProductService)
         {
@@ -82,6 +84,12 @@ namespace WebApplication1.Controllers
             await _securityProductService.DeleteSecurityProductsAsync(id);
             return NoContent(); // 204 No Content döner, başarılı bir silme işlemi sonrası içerik yok
         }
+        //[HttpGet("grouped-by-type")]
+        //public async Task<ActionResult<List<SecurityProductViewModel>>> GetGroupedProducts()
+        //{
+           //var result = await _securityProductService.GetSecurityProductsByTypeAsync();
+           //return Ok(result);
+        //}
     }
 }
 

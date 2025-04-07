@@ -1,61 +1,57 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 export default function NetworkSecurity() {
+  const [products, setProducts] = useState([]);
+  useEffect(() => {
+    fetch("/api/securityproducts/grouped-by-type")
+      .then((res) => res.json())
+      .then((data) => setProducts(data));
+  }, []);
   return (
     <>
-      <div className="NetworkSecurity-btn-1">
-        <button
-          type="button"
-          className="btn btn-dark"
-          style={{ marginTop: 125, width: 450 }}
-        >
-          EDR Ürünleri
-        </button>
-      </div>
+      {/* Dinamik Butonlar ve Kartlar */}
+      {Object.keys(products).map((productType) => (
+        <div key={productType}>
+          <div className={`NetworkSecurity-btn-${productType} mt-3`}>
+            <button
+              type="button"
+              className="btn btn-dark"
+              style={{ width: 450 }}
+            >
+              {productType}
+            </button>
+          </div>
 
-      {/* Card for EDR Ürünleri */}
-      <div className="card mt-3">
-        <div className="card-header">
-          <h5 className="mb-0">EDR Ürünleri</h5>
+          {/* Dinamik Kartlar */}
+          {products[productType].length > 0 ? (
+            products[productType].map((product) => (
+              <div className="card mt-3" key={product.security_product_id}>
+                <div className="card-header">
+                  <h5 className="mb-0">{product.name}</h5>
+                </div>
+                <div className="card-body">
+                  <p>
+                    <strong>Category:</strong> {product.category_id}
+                  </p>
+                  <p>
+                    <strong>License Start Date:</strong>{" "}
+                    {new Date(product.license_start_date).toLocaleDateString()}
+                  </p>
+                  <p>
+                    <strong>License End Date:</strong>{" "}
+                    {new Date(product.license_end_date).toLocaleDateString()}
+                  </p>
+                  <p>
+                    <strong>Type:</strong> {product.product_type}
+                  </p>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p>No products available for {productType}</p>
+          )}
         </div>
-        <div className="card-body">
-          <p>Details and description for EDR Ürünleri will go here.</p>
-        </div>
-      </div>
-
-      <div className="NetworkSecurity-btn-2 mt-3">
-        <button type="button" className="btn btn-dark" style={{ width: 450 }}>
-          Ağ Trafiği İzleme Araçları
-        </button>
-      </div>
-
-      {/* Card for Ağ Trafiği İzleme Araçları */}
-      <div className="card mt-3">
-        <div className="card-header">
-          <h5 className="mb-0">Ağ Trafiği İzleme Araçları</h5>
-        </div>
-        <div className="card-body">
-          <p>
-            Details and description for Ağ Trafiği İzleme Araçları will go here.
-          </p>
-        </div>
-      </div>
-
-      <div className="NetworkSecurity-btn-2 mt-3">
-        <button type="button" className="btn btn-dark" style={{ width: 450 }}>
-          FireWall Çözümleri
-        </button>
-      </div>
-
-      {/* Card for Firewall Cihazları */}
-      <div className="card mt-3">
-        <div className="card-header">
-          <h5 className="mb-0">Firewall Ürünü</h5>
-        </div>
-        <div className="card-body">
-          <p>Details and description for Firewall Cihazları will go here.</p>
-        </div>
-      </div>
+      ))}
     </>
   );
 }

@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 export default function AdminDashboard() {
   const [products, setProducts] = useState([]);
@@ -18,29 +19,104 @@ export default function AdminDashboard() {
   const [filter, setFilter] = useState("");
   const categories = ["Computer Products", "Security Products"];
 
+  // Computer Products API getir
+  useEffect(() => {
+    const fetchComputerProducts = async () => {
+      try {
+        const response = await axios.get(
+          "https://localhost:7191/api/ComputerProducts"
+        );
+        setProducts(response.data); // Doğrudan products state'ini güncelle
+      } catch (error) {
+        console.error("Computer ürünleri alınırken hata oluştu", error);
+      }
+    };
+
+    fetchComputerProducts();
+  }, []);
+
+  // Security Product API getir
+  useEffect(() => {
+    const fetchSecurityProducts = async () => {
+      try {
+        const response = await axios.get(
+          "https://localhost:7191/api/SecurityProduct"
+        );
+        setProducts((prevProducts) => [...prevProducts, ...response.data]); // Güvenlik ürünlerini de ekleyin
+      } catch (error) {
+        console.log("Güvenlik ürünleri alırken hata oluştu", error);
+      }
+    };
+    fetchSecurityProducts();
+  }, []);
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const addProduct = () => {
+  // Ürünü ekle
+  const addProduct = async () => {
     if (!formData.name || !formData.category) return;
-    setProducts([...products, { ...formData, id: Date.now() }]);
-    setFormData({
-      id: "",
-      name: "",
-      brand: "",
-      model: "",
-      ram: "",
-      product_type: "",
-      license_start_date: "",
-      license_end_date: "",
-      category: "",
-    });
+
+    try {
+      let endpoint = "";
+
+      if (formData.category === "Computer Products") {
+        endpoint = "https://localhost:7191/api/ComputerProducts";
+      } else if (formData.category === "Security Products") {
+        endpoint = "https://localhost:7191/api/SecurityProduct";
+      } else {
+        alert("Geçersiz kategori!");
+        return;
+      }
+
+      const response = await axios.post(endpoint, formData);
+
+      // Backend başarılı dönerse, ürünü local state'e de ekle
+      setProducts([...products, response.data]);
+
+      // Formu temizle
+      setFormData({
+        id: "",
+        name: "",
+        brand: "",
+        model: "",
+        ram: "",
+        product_type: "",
+        license_start_date: "",
+        license_end_date: "",
+        category: "",
+      });
+
+      alert("Ürün başarıyla eklendi!");
+    } catch (error) {
+      console.error("Ürün eklenirken hata oluştu:", error);
+      alert("Ürün eklenemedi.");
+    }
   };
 
-  const deleteProduct = (id) => {
-    if (window.confirm("Bu ürünü silmek istediğinize emin misiniz?")) {
-      setProducts(products.filter((product) => product.id !== id));
+  // Ürün silme
+  const deleteProduct = async (id) => {
+    const productToDelete = products.find((p) => p.id === id);
+    if (!productToDelete) return;
+    if (!window.confirm("Bu ürünü silmek istediğinize emin misiniz?")) return;
+    try {
+      let endpoint = "";
+      if (productToDelete.category === "Computer Products") {
+        endpoint = `https://localhost:7191/api/ComputerProducts/${id}`;
+      } else if (productToDelete.category === "Security Products") {
+        endpoint = `https://localhost:7191/api/SecurityProduct/${id}`;
+      } else {
+        alert("Geçersiz ürün");
+        return;
+      }
+      await axios.delete(endpoint);
+
+      setProducts(products.filter((product) => product.id !== id)); // Silme işlemi sonrası state güncelle
+      alert("Ürün başarıyla silindi");
+    } catch (error) {
+      console.log("silme hatası", error);
+      alert("Ürün silinmedi");
     }
   };
 
@@ -49,22 +125,41 @@ export default function AdminDashboard() {
     setEditing(true);
   };
 
-  const updateProduct = () => {
-    setProducts(
-      products.map((prod) => (prod.id === formData.id ? formData : prod))
-    );
-    setFormData({
-      id: "",
-      name: "",
-      brand: "",
-      model: "",
-      ram: "",
-      product_type: "",
-      license_start_date: "",
-      license_end_date: "",
-      category: "",
-    });
-    setEditing(false);
+  // Ürünü güncelleme
+  const updateProduct = async () => {
+    if (!formData.id || !formData.category) return;
+    try {
+      let endpoint = "";
+      if (formData.category === "Computer Products") {
+        endpoint = `https://localhost:7191/api/ComputerProducts/${formData.id}`;
+      } else if (formData.category === "Security Products") {
+        endpoint = `https://localhost:7191/api/SecurityProduct/${formData.id}`;
+      } else {
+        alert("Geçersiz ürün");
+        return;
+      }
+      await axios.put(endpoint, formData);
+      // State de ürünü güncelle
+      setProducts(
+        products.map((prod) => (prod.id === formData.id ? formData : prod))
+      );
+      setFormData({
+        id: "",
+        name: "",
+        brand: "",
+        model: "",
+        ram: "",
+        product_type: "",
+        license_start_date: "",
+        license_end_date: "",
+        category: "",
+      });
+      setEditing(false);
+      alert("Ürün başarıyla güncellendi!");
+    } catch (error) {
+      console.log("Hatalı güncelleme", error);
+      alert("Ürün güncellenmedi tekrar deneyin!");
+    }
   };
 
   return (
@@ -193,7 +288,7 @@ export default function AdminDashboard() {
               )}
               <button
                 className="btn btn-danger w-100"
-                onClick={() => deleteProduct(product.id)}
+                onClick={() => deleteProduct(id)}
               >
                 Sil
               </button>
