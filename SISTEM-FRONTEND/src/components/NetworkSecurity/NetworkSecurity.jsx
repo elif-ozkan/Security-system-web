@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 export default function NetworkSecurity() {
   const [products, setProducts] = useState([]);
   useEffect(() => {
-    fetch("/api/securityproducts/grouped-by-type")
+    fetch("/api/securityproduct/grouped-by-type")
       .then((res) => res.json())
       .then((data) => setProducts(data));
   }, []);
