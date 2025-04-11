@@ -1,0 +1,26 @@
+@model IEnumerable<WebApplication1.Models.Assignments>
+    @{
+        ViewBag.Title="User Assigment";
+    }
+    <h2>User Assigments</h2>
+    <table class="table table-bordered table-striped"></table>
+    <thead>
+        <tr>
+            <th>User</th>
+            <th>Computer Product</th>
+            <th>Security Product</th>
+            <th>Assignment Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var assignment in Model)
+        {
+            <tr>
+                <td>@assignment.UserId</td>
+                <td>@assignment.ComputerProduct?.Name ?? "—"</td>
+                <td>@assignment.SecurityProduct?.Name ?? "—"</td>
+                <td>@assignment.AssignmentDate</td>
+            </tr>
+        }
+    </tbody>
+</table>

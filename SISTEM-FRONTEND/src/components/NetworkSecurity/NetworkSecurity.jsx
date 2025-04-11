@@ -3,9 +3,15 @@ import React, { useEffect, useState } from "react";
 export default function NetworkSecurity() {
   const [products, setProducts] = useState([]);
   useEffect(() => {
-    fetch("https://localhost:7191/api/SecurityProduct/grouped-by-type")
+    fetch("https://localhost:7191/api/SecurityProduct/grouped-by-type") //istek url
       .then((res) => res.json())
-      .then((data) => setProducts(data));
+      .then((data) => {
+        const grouped = {};
+        data.forEach((group) => {
+          grouped[group.productType] = group.securityProducts;
+        });
+        setProducts(grouped);
+      });
   }, []);
   return (
     <>

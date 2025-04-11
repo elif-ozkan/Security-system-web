@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Product.css";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 export default function Products() {
   const categories = [
@@ -75,11 +76,17 @@ export default function Products() {
         ) : (
           products.map((product) => (
             <div key={product.id} className="product-card">
-              <img
-                src={product.img || "path_to_default_image.jpg"}
-                alt={product.name}
-              />
-              <h3>{product.name}</h3>
+              <Link
+                to={`/product/${product.id}`}
+                className="product-card"
+                key={product.id}
+              >
+                <img
+                  src={product.img || "path_to_default_image.jpg"}
+                  alt={product.name}
+                />
+                <h3>{product.name}</h3>
+              </Link>
             </div>
           ))
         )}

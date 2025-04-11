@@ -1,6 +1,19 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 export default function IDS() {
+  const [products, setProducts] = useState({});
+
+  useEffect(() => {
+    fetch("https://localhost:7191/api/SecurityProduct/grouped-by-type")
+      .then((res) => res.json())
+      .then((data) => {
+        const grouped = {};
+        data.forEach((group) => {
+          grouped[group.productType] = group.securityProducts;
+        });
+        setProducts(grouped);
+      });
+  }, []);
   return (
     <>
       <style>
@@ -85,31 +98,53 @@ export default function IDS() {
 
       <div className="container">
         <div className="grid-container">
-          <button type="button" className="itworker-btn itworker-btn-dark">
-            IDS Ürünleri
-          </button>
-          <div className="card">
-            <h5 className="card-title">IDS Ürünü</h5>
-            <p className="card-text">
-              IDS ürünü ile ilgili detay bu kısımda yer alır.
-            </p>
-            <a href="#" className="btn btn-primary">
-              Detaylar
-            </a>
-          </div>
+          {/* IDS Ürünleri */}
+          {products["IDS"] && (
+            <>
+              <button type="button" className="itworker-btn itworker-btn-dark">
+                IDS Ürünleri
+              </button>
+              {products["IDS"].map((product) => (
+                <div className="card" key={product.securityProductId}>
+                  <h5 className="card-title">{product.name}</h5>
+                  <p className="card-text">
+                    Başlangıç:{" "}
+                    {new Date(product.licenseStartDate).toLocaleDateString()}
+                    <br />
+                    Bitiş:{" "}
+                    {new Date(product.licenseEndDate).toLocaleDateString()}
+                  </p>
+                  <a href="#" className="btn btn-primary">
+                    Detaylar
+                  </a>
+                </div>
+              ))}
+            </>
+          )}
 
-          <button type="button" className="itworker-btn itworker-btn-dark">
-            IPS Ürünleri
-          </button>
-          <div className="card">
-            <h5 className="card-title">IPS Ürünü</h5>
-            <p className="card-text">
-              IPS Ürünü ile ilgili detay bu kısımda yer alacak
-            </p>
-            <a href="#" className="btn btn-primary">
-              Detaylar
-            </a>
-          </div>
+          {/* IPS Ürünleri */}
+          {products["IPS"] && (
+            <>
+              <button type="button" className="itworker-btn itworker-btn-dark">
+                IPS Ürünleri
+              </button>
+              {products["IPS"].map((product) => (
+                <div className="card" key={product.securityProductId}>
+                  <h5 className="card-title">{product.name}</h5>
+                  <p className="card-text">
+                    Başlangıç:{" "}
+                    {new Date(product.licenseStartDate).toLocaleDateString()}
+                    <br />
+                    Bitiş:{" "}
+                    {new Date(product.licenseEndDate).toLocaleDateString()}
+                  </p>
+                  <a href="#" className="btn btn-primary">
+                    Detaylar
+                  </a>
+                </div>
+              ))}
+            </>
+          )}
         </div>
       </div>
     </>

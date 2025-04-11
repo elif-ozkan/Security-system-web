@@ -25,3 +25,15 @@ build_property.SupportLocalizedComponentNames =
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
 build_property.MSBuildProjectDirectory = C:\Users\elifo\source\repos\elif-ozkan\Security-system-web\WebApplication1\WebApplication1
 build_property._RazorSourceGeneratorDebug = 
+
+[C:/Users/elifo/source/repos/elif-ozkan/Security-system-web/WebApplication1/WebApplication1/View/ComputerProductAssigments.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld1xDb21wdXRlclByb2R1Y3RBc3NpZ21lbnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/elifo/source/repos/elif-ozkan/Security-system-web/WebApplication1/WebApplication1/View/SecurityProductAssigments.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld1xTZWN1cml0eVByb2R1Y3RBc3NpZ21lbnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/elifo/source/repos/elif-ozkan/Security-system-web/WebApplication1/WebApplication1/View/UserAssigments.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld1xVc2VyQXNzaWdtZW50cy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 

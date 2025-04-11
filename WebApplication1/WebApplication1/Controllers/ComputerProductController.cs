@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using WebApplication1.Models;
 using WebApplication1.Services;
+using WebApplication1.ViewModels;
 
 namespace WebApplication1.Controllers
 {
@@ -85,10 +86,11 @@ namespace WebApplication1.Controllers
                 var updatedProduct = await _computerProductService.UpdateComputerProducts(computerProducts);
                 return Ok(updatedProduct);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Hata günlüğü için log ekleyebilirsiniz
                 return StatusCode(500, "Ürün güncellenirken bir hata oluştu.");
+                
             }
         }
 
@@ -107,12 +109,19 @@ namespace WebApplication1.Controllers
                 await _computerProductService.DeleteComputerProducts(id);
                 return NoContent(); // Başarılı silme işlemi
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Hata günlüğü için log ekleyebilirsiniz
                 return StatusCode(500, "Ürün silinirken bir hata oluştu.");
             }
         }
+        [HttpGet("grouped-by-type")]
+       public async Task<ActionResult<List<ComputerProductViewModel>>> GetGroupedProducts()
+      {
+    var result = await _computerProductService.GetAllComputerProductsAsync();
+    return Ok(result);
+      }
+
     }
 }
 
