@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 export default function NetworkSecurity() {
   const [products, setProducts] = useState([]);
   useEffect(() => {
-    fetch("https://localhost:7191/api/SecurityProduct/grouped-by-type") //istek url
+    fetch("https://localhost:7191/api/ComputerProducts/grouped-by-type") //istek url
       .then((res) => res.json())
       .then((data) => {
         const grouped = {};

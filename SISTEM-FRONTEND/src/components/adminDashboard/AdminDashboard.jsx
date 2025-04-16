@@ -1,365 +1,287 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
+import { productConfigs } from "./ProductConfig.jsx";
 
-export default function AdminDashboard() {
+const BASE_URL = "https://localhost:7191/api/admin";
+
+const AdminDashboard = () => {
+  const [selectedType, setSelectedType] = useState("computer");
   const [products, setProducts] = useState([]);
-  const [formData, setFormData] = useState({
-    id: "",
-    name: "",
-    brand: "",
-    model: "",
-    ram: "",
-    product_type: "",
-    license_start_date: "",
-    license_end_date: "",
-    category: "",
-  });
-  const [editing, setEditing] = useState(false);
-  const [filter, setFilter] = useState("");
-  const categories = ["Computer Products", "Security Products"];
+  const [form, setForm] = useState({});
+  const [isEdit, setIsEdit] = useState(false);
+  const [editId, setEditId] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  // Computer Products API getir
+  const config = productConfigs[selectedType];
+
   useEffect(() => {
-    const fetchComputerProducts = async () => {
-      try {
-        const response = await axios.get(
-          "https://localhost:7191/api/ComputerProducts"
-        );
-        setProducts(response.data); // Doğrudan products state'ini güncelle
-      } catch (error) {
-        console.error("Computer ürünleri alınırken hata oluştu", error);
-      }
-    };
+    setForm(config.defaultForm);
+    fetchProducts();
+  }, [selectedType]);
 
-    fetchComputerProducts();
-  }, []);
+  const makeApiRequest = async (method, endpoint, data = null) => {
+    try {
+      let response;
 
-  // Security Product API getir
-  useEffect(() => {
-    const fetchSecurityProducts = async () => {
-      try {
-        const response = await axios.get(
-          "https://localhost:7191/api/SecurityProduct"
-        );
-        setProducts((prevProducts) => [...prevProducts, ...response.data]); // Güvenlik ürünlerini de ekleyin
-      } catch (error) {
-        console.log("Güvenlik ürünleri alırken hata oluştu", error);
+      switch (method.toLowerCase()) {
+        case "get":
+          response = await axios.get(endpoint);
+          break;
+        case "post":
+          response = await axios.post(endpoint, data);
+          break;
+        case "put":
+          response = await axios.put(endpoint, data);
+          break;
+        case "delete":
+          response = await axios.delete(endpoint);
+          break;
+        default:
+          throw new Error(`Geçersiz HTTP metodu: ${method}`);
       }
-    };
-    fetchSecurityProducts();
-  }, []);
+
+      return response;
+    } catch (err) {
+      setError(err.response?.data || err.message);
+      throw err;
+    }
+  };
+
+  const fetchProducts = async () => {
+    setLoading(true);
+    setError(null);
+    const endpoint = `${BASE_URL}/${config.apiType}`;
+
+    try {
+      const res = await makeApiRequest("get", endpoint);
+      const data = res.data;
+
+      // Universal data parsing
+      let productArray = [];
+
+      if (Array.isArray(data)) {
+        productArray = data;
+      } else if (data && typeof data === "object") {
+        for (const key in data) {
+          if (Array.isArray(data[key])) {
+            productArray = data[key];
+            break;
+          }
+        }
+        if (productArray.length === 0) productArray = [data];
+      }
+
+      setProducts(productArray);
+    } catch (err) {
+      setProducts([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value, type } = e.target;
+    setForm({
+      ...form,
+      [name]: type === "number" ? (value === "" ? "" : Number(value)) : value,
+    });
   };
 
-  // Ürünü ekle
-  const addProduct = async () => {
-    if (!formData.name || !formData.category) return;
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    const endpoint = `${BASE_URL}/${config.apiType}${
+      isEdit ? `/${editId}` : ""
+    }`;
 
     try {
-      let endpoint = "";
-
-      if (formData.category === "Computer Products") {
-        endpoint = "https://localhost:7191/api/ComputerProducts";
-      } else if (formData.category === "Security Products") {
-        endpoint = "https://localhost:7191/api/SecurityProduct";
-      } else {
-        alert("Geçersiz kategori!");
-        return;
-      }
-
-      const response = await axios.post(endpoint, formData);
-
-      // Backend başarılı dönerse, ürünü local state'e de ekle
-      setProducts([...products, response.data]);
-
-      // Formu temizle
-      setFormData({
-        id: "",
-        name: "",
-        brand: "",
-        model: "",
-        ram: "",
-        product_type: "",
-        license_start_date: "",
-        license_end_date: "",
-        category: "",
-      });
-
-      alert("Ürün başarıyla eklendi!");
-    } catch (error) {
-      console.error("Ürün eklenirken hata oluştu:", error);
-      alert("Ürün eklenemedi.");
+      await makeApiRequest(isEdit ? "put" : "post", endpoint, form);
+      await fetchProducts();
+      setForm(config.defaultForm);
+      setIsEdit(false);
+      setEditId(null);
+    } catch (err) {
+      console.error("Kayıt hatası:", err);
+    } finally {
+      setLoading(false);
     }
   };
 
-  // Ürün silme
-  const deleteProduct = async (id) => {
-    const productToDelete = products.find((p) => p.id === id);
-    if (!productToDelete) return;
-    if (!window.confirm("Bu ürünü silmek istediğinize emin misiniz?")) return;
-    try {
-      let endpoint = "";
-      if (productToDelete.category === "Computer Products") {
-        endpoint = `https://localhost:7191/api/ComputerProducts/${id}`;
-      } else if (productToDelete.category === "Security Products") {
-        endpoint = `https://localhost:7191/api/SecurityProduct/${id}`;
-      } else {
-        alert("Geçersiz ürün");
-        return;
-      }
-      await axios.delete(endpoint);
+  const handleEdit = (product) => {
+    setForm({ ...product });
+    setIsEdit(true);
 
-      setProducts(products.filter((product) => product.id !== id)); // Silme işlemi sonrası state güncelle
-      alert("Ürün başarıyla silindi");
-    } catch (error) {
-      console.log("silme hatası", error);
-      alert("Ürün silinmedi");
+    const idField =
+      selectedType === "computer"
+        ? product.computerProductId
+        : selectedType === "security"
+        ? product.securityProductId
+        : product.id;
+
+    setEditId(idField || product.id);
+  };
+
+  const handleDelete = async (product) => {
+    const idField =
+      selectedType === "computer"
+        ? product.computerProductId
+        : selectedType === "security"
+        ? product.securityProductId
+        : product.id;
+
+    if (!idField) {
+      setError("Bu ürün için ID bulunamadı.");
+      return;
     }
-  };
 
-  const editProduct = (product) => {
-    setFormData(product);
-    setEditing(true);
-  };
+    const endpoint = `${BASE_URL}/${config.apiType}/${idField}`;
+    setLoading(true);
 
-  // Ürünü güncelleme
-  const updateProduct = async () => {
-    if (!formData.id || !formData.category) return;
     try {
-      let endpoint = "";
-      if (formData.category === "Computer Products") {
-        endpoint = `https://localhost:7191/api/ComputerProducts/${formData.id}`;
-      } else if (formData.category === "Security Products") {
-        endpoint = `https://localhost:7191/api/SecurityProduct/${formData.id}`;
-      } else {
-        alert("Geçersiz ürün");
-        return;
-      }
-      await axios.put(endpoint, formData);
-      // State de ürünü güncelle
-      setProducts(
-        products.map((prod) => (prod.id === formData.id ? formData : prod))
-      );
-      setFormData({
-        id: "",
-        name: "",
-        brand: "",
-        model: "",
-        ram: "",
-        product_type: "",
-        license_start_date: "",
-        license_end_date: "",
-        category: "",
-      });
-      setEditing(false);
-      alert("Ürün başarıyla güncellendi!");
-    } catch (error) {
-      console.log("Hatalı güncelleme", error);
-      alert("Ürün güncellenmedi tekrar deneyin!");
+      await makeApiRequest("delete", endpoint);
+      await fetchProducts();
+    } catch (err) {
+      console.error("Silme hatası:", err);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="d-flex min-vh-100 bg-light">
-      <nav className="bg-dark text-white p-3" style={{ width: "200px" }}>
-        <h2>Admin Panel</h2>
-        <ul className="nav flex-column">
-          <li className="nav-item">
-            <a href="#" className="nav-link text-white">
-              Ürünler
-            </a>
-          </li>
-          <li className="nav-item">
-            <a href="#" className="nav-link text-white">
-              Ayarlar
-            </a>
-          </li>
-          <li className="nav-item">
-            <Link to="/admin/charts"> İstatistikler</Link>
-          </li>
-        </ul>
-      </nav>
-      <main className="flex-grow-1 p-4">
-        <h1 className="mb-4">Admin Panel</h1>
-        <div className="card p-4 mb-4">
-          <h2 className="mb-3">Ürün Ekle / Güncelle/Sil</h2>
-          <div className="row g-2">
-            <div className="col-md-3">
+    <div className="admin-dashboard p-4">
+      <h2 className="text-2xl font-bold mb-4">Admin Panel</h2>
+
+      <div className="mb-4">
+        <label className="mr-2 font-medium">Ürün Tipi Seç:</label>
+        <select
+          value={selectedType}
+          onChange={(e) => setSelectedType(e.target.value)}
+          className="border p-2 rounded"
+          disabled={loading}
+        >
+          <option value="computer">Computer Product</option>
+          <option value="security">Security Product</option>
+        </select>
+      </div>
+
+      {error && (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+          <strong>Hata:</strong> {String(error)}
+        </div>
+      )}
+
+      <form onSubmit={handleSubmit} className="mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          {config.fields.map((field) => (
+            <div key={field.name} className="flex flex-col">
+              <label htmlFor={field.name} className="mb-1 font-medium">
+                {field.placeholder}
+              </label>
               <input
-                className="form-control"
-                name="name"
-                placeholder="Ürün Adı"
-                value={formData.name}
+                id={field.name}
+                type={field.type}
+                name={field.name}
+                placeholder={field.placeholder}
+                value={form[field.name] || ""}
                 onChange={handleChange}
+                className="border p-2 rounded"
+                required
+                disabled={loading}
               />
             </div>
-            {formData.category === "Computer Products" && (
-              <>
-                <div className="col-md-3">
-                  <input
-                    className="form-control"
-                    name="brand"
-                    placeholder="Marka"
-                    value={formData.brand}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="col-md-3">
-                  <input
-                    className="form-control"
-                    name="model"
-                    placeholder="Model"
-                    value={formData.model}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="col-md-3">
-                  <input
-                    className="form-control"
-                    name="ram"
-                    placeholder="RAM"
-                    value={formData.ram}
-                    onChange={handleChange}
-                  />
-                </div>
-              </>
-            )}
-            {formData.category === "Security Products" && (
-              <>
-                <div className="col-md-3">
-                  <input
-                    className="form-control"
-                    name="product_type"
-                    placeholder="Ürün Türü"
-                    value={formData.product_type}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="col-md-3">
-                  <input
-                    className="form-control"
-                    name="license_start_date"
-                    type="date"
-                    value={formData.license_start_date}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="col-md-3">
-                  <input
-                    className="form-control"
-                    name="license_end_date"
-                    type="date"
-                    value={formData.license_end_date}
-                    onChange={handleChange}
-                  />
-                </div>
-              </>
-            )}
-            <div className="col-md-3">
-              <select
-                className="form-control"
-                name="category"
-                value={formData.category}
-                onChange={handleChange}
-              >
-                <option value="">Kategori Seç</option>
-                {categories.map((cat, index) => (
-                  <option key={index} value={cat}>
-                    {cat}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="col-md-2">
-              {editing ? (
-                <button
-                  className="btn btn-primary w-100"
-                  onClick={updateProduct}
-                >
-                  Güncelle
-                </button>
-              ) : (
-                <button className="btn btn-success w-100" onClick={addProduct}>
-                  Ekle
-                </button>
-              )}
-              <button
-                className="btn btn-danger w-100"
-                onClick={() => deleteProduct(id)}
-              >
-                Sil
-              </button>
-              <button className="btn btn-primary w-100" onClick={updateProduct}>
-                Güncelle
-              </button>
-            </div>
-          </div>
+          ))}
         </div>
-        <table className="table table-striped">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Ürün Adı</th>
-              {filter === "Computer Products" && (
-                <>
-                  <th>Marka</th>
-                  <th>Model</th>
-                  <th>RAM</th>
-                </>
-              )}
-              {filter === "Security Products" && (
-                <>
-                  <th>Ürün Türü</th>
-                  <th>Başlangıç Tarihi</th>
-                  <th>Bitiş Tarihi</th>
-                </>
-              )}
-              <th>İşlemler</th>
-            </tr>
-          </thead>
-          <tbody>
-            {products
-              .filter((product) => !filter || product.category === filter)
-              .map((product) => (
-                <tr key={product.id}>
-                  <td>{product.id}</td>
-                  <td>{product.name}</td>
-                  {product.category === "Computer Products" && (
-                    <>
-                      <td>{product.brand}</td>
-                      <td>{product.model}</td>
-                      <td>{product.ram}</td>
-                    </>
-                  )}
-                  {product.category === "Security Products" && (
-                    <>
-                      <td>{product.product_type}</td>
-                      <td>{product.license_start_date}</td>
-                      <td>{product.license_end_date}</td>
-                    </>
-                  )}
-                  <td>
-                    <button
-                      className="btn btn-warning me-2"
-                      onClick={() => editProduct(product)}
-                    >
-                      Düzenle
-                    </button>
-                    <button
-                      className="btn btn-danger"
-                      onClick={() => deleteProduct(product.id)}
-                    >
-                      Sil
-                    </button>
+        <button
+          type="submit"
+          className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 disabled:bg-blue-300"
+          disabled={loading}
+        >
+          {loading ? "İşleniyor..." : isEdit ? "Güncelle" : "Ekle"}
+        </button>
+        {isEdit && (
+          <button
+            type="button"
+            onClick={() => {
+              setIsEdit(false);
+              setEditId(null);
+              setForm(config.defaultForm);
+            }}
+            className="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600 ml-2 disabled:bg-gray-300"
+            disabled={loading}
+          >
+            İptal
+          </button>
+        )}
+      </form>
+
+      <h3 className="text-xl font-semibold mb-2">Ürün Listesi</h3>
+
+      {loading ? (
+        <div className="text-center py-4">Yükleniyor...</div>
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="min-w-full bg-white border">
+            <thead>
+              <tr>
+                {config.fields.map((field) => (
+                  <th key={field.name} className="py-2 px-4 border-b text-left">
+                    {field.placeholder}
+                  </th>
+                ))}
+                <th className="py-2 px-4 border-b text-left">İşlemler</th>
+              </tr>
+            </thead>
+            <tbody>
+              {products.length === 0 ? (
+                <tr>
+                  <td
+                    colSpan={config.fields.length + 1}
+                    className="py-4 px-4 text-center"
+                  >
+                    Henüz ürün bulunmuyor
                   </td>
                 </tr>
-              ))}
-          </tbody>
-        </table>
-      </main>
+              ) : (
+                products.map((product, index) => (
+                  <tr
+                    key={index}
+                    className={index % 2 === 0 ? "bg-gray-50" : ""}
+                  >
+                    {config.fields.map((field) => (
+                      <td key={field.name} className="py-2 px-4 border-b">
+                        {product[field.name] !== undefined
+                          ? String(product[field.name])
+                          : "-"}
+                      </td>
+                    ))}
+                    <td className="py-2 px-4 border-b">
+                      <button
+                        onClick={() => handleEdit(product)}
+                        className="bg-yellow-500 text-white py-1 px-2 rounded mr-2 hover:bg-yellow-600"
+                        disabled={loading}
+                      >
+                        Düzenle
+                      </button>
+                      <button
+                        onClick={() => handleDelete(product)}
+                        className="bg-red-500 text-white py-1 px-2 rounded hover:bg-red-600"
+                        disabled={loading}
+                      >
+                        Sil
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
-}
+};
+
+export default AdminDashboard;

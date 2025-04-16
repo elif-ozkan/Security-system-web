@@ -1,1 +1,118 @@
+/* Genel Sayfa Düzeni */
+.product-list-container {
+  margin: 0 auto;
+  padding: 20px;
+  max-width: 1200px; /* Sayfanın genişliği */
+  font-family: Arial, sans-serif;
+}
 
+/* Kategori Başlığı */
+.category-title {
+  text-align: center;
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 30px;
+  font-weight: bold;
+}
+
+/* Ürünlerin Grid Düzeni */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  justify-items: center;
+  margin-top: 20px;
+}
+
+/* Ürün Kartı */
+.product-card {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  width: 100%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Kart İçeriği */
+.card-content {
+  padding: 20px;
+  text-align: center;
+}
+
+/* Ürün Adı */
+.product-name {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #343a40;
+  margin-bottom: 15px;
+}
+
+/* Ürün Bilgisi */
+.product-info {
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 15px;
+}
+
+/* RAM Bilgisi */
+.product-ram {
+  font-size: 1.1rem;
+  color: #888;
+  margin-bottom: 20px;
+}
+
+/* Detaylar Butonu */
+.details-button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 1rem;
+  cursor: pointer;
+  display: inline-block;
+  transition: background-color 0.3s ease;
+}
+
+.details-button:hover {
+  background-color: #0056b3;
+}
+
+/* Responsive Tasarım */
+@media (max-width: 768px) {
+  .category-title {
+    font-size: 1.5rem;
+  }
+
+  .product-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .category-title {
+    font-size: 1.2rem;
+  }
+
+  .product-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .product-name {
+    font-size: 1.1rem;
+  }
+
+  .product-info {
+    font-size: 1rem;
+  }
+
+  .details-button {
+    font-size: 0.9rem;
+  }
+}

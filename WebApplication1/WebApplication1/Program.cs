@@ -29,9 +29,11 @@ builder.Services.AddScoped<UserTypeService>();
 builder.Services.AddScoped<SecurityProductAssigmentRepository>();
 builder.Services.AddScoped<SecurityProductAssigmentService>();
 builder.Services.AddScoped<ComputerProductAssigmentRepository>();
-builder.Services.AddScoped<ComputerProductAssigmentService>();
+builder.Services.AddScoped<ComputerProductAssigmentService>(); 
+builder.Services.AddScoped<AdminRepository>();
+builder.Services.AddScoped<AdminService>();
 
-//CORS PolitikasÄ± kÄ±smÄ±
+//CORS Politikasý kýsmý
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowLocalhost",
@@ -44,7 +46,9 @@ builder.Services.AddCors(options =>
 });
 
 
+
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -56,7 +60,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
-app.UseCors("AllowLocalhost"); //CORS PolitikasÄ± aktif
+app.UseCors("AllowLocalhost"); //CORS Politikasý aktif
 
 app.MapControllers();
 
