@@ -20,6 +20,9 @@ import Charts from "./components/adminDashboard/Charts";
 import Team from "./components/Team/Team";
 import Login from "./components/Login/login";
 import CreateAccount from "./components/CreateAccount/createAccount";
+import GuestPage from "./components/GuestPage/GuestPage";
+import UserPage from "./components/Login/UserPage";
+import { UserProvider } from "./UserContext";
 
 function App() {
   return (
@@ -60,6 +63,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/createaccount" element={<CreateAccount />} />
           <Route path="/login/createaccount" element={<CreateAccount />} />
+          <Route path="/guestpage" element={<GuestPage />} />
+          <Route path="/user/:id" element={<UserPage />} />
         </Routes>
         {/*<MainPage />*/}
       </Router>

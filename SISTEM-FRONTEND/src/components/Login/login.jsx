@@ -9,30 +9,28 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+
   const handleLogin = async (e) => {
     e.preventDefault(); // Formun sayfayı yeniden yüklemesini engelliyoruz
-
     try {
-      // Kullanıcı adı ve şifre ile API'ye giriş isteği
-      const response = await axios.post("", {
+      const response = await axios.post("https://localhost:7191/api/Login", {
         username,
         password,
       });
 
-      const user = response.data; // API'den gelen kullanıcı verisi
+      const user = response.data;
 
-      // Kullanıcı verisini localStorage'a kaydediyoruz
+      // Kullanıcı bilgilerini localStorage'a kaydet
       localStorage.setItem("userId", user.id);
+      localStorage.setItem("user role", user.role);
+      localStorage.setItem("user name", user.name);
 
-      // Kullanıcının rolüne göre yönlendirme işlemi
-      if (user.role === "IT Çalışanıyım") {
-        navigate("/Itworker"); // IT ürünleri sayfasına yönlendirme
-      } else if (user.role === "IT Çalışanı Değilim") {
-        navigate("/Nıtworker"); // Normal kullanıcı sayfasına yönlendirme
-      }
+      // Dinamik user page yönlendirmesi
+      navigate(`/user/${user.id}`);
     } catch (error) {
       setError("Başarısız giriş. Lütfen tekrar deneyin.");
     }

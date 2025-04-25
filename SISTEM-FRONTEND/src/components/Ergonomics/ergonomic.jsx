@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import Navbar from "../Login/Navbar";
 
 function Ergonomics() {
   const [products, setProducts] = useState({});
@@ -70,46 +71,49 @@ function Ergonomics() {
   );
 
   return (
-    <div className="container">
-      {/* Dinamik Kategori Butonları */}
-      <div
-        className="grid-container mb-4"
-        style={{ display: "flex", gap: "10px", justifyContent: "center" }}
-      >
-        {Object.keys(products).map((category) => (
-          <button
-            key={category}
-            type="button"
-            className="itworker-btn itworker-btn-dark me-2"
-            onClick={() => setSelectedCategory(category)}
-          >
-            {category}
-          </button>
-        ))}
-      </div>
-
-      {/* Seçilen Kategoriye Göre Ürün Kartları */}
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          gap: "20px",
-          justifyContent: "center",
-        }}
-      >
-        {selectedCategory &&
-          products[selectedCategory]?.map((product) => (
-            <div key={product.computerProductId}>{renderCard(product)}</div>
+    <>
+      <Navbar />
+      <div className="container">
+        {/* Dinamik Kategori Butonları */}
+        <div
+          className="grid-container mb-4"
+          style={{ display: "flex", gap: "10px", justifyContent: "center" }}
+        >
+          {Object.keys(products).map((category) => (
+            <button
+              key={category}
+              type="button"
+              className="itworker-btn itworker-btn-dark me-2"
+              onClick={() => setSelectedCategory(category)}
+            >
+              {category}
+            </button>
           ))}
-      </div>
-
-      {/* Henüz kategori seçilmediyse mesaj */}
-      {!selectedCategory && (
-        <div style={{ textAlign: "center", marginTop: "20px" }}>
-          <p>Lütfen bir kategori seçiniz.</p>
         </div>
-      )}
-    </div>
+
+        {/* Seçilen Kategoriye Göre Ürün Kartları */}
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "20px",
+            justifyContent: "center",
+          }}
+        >
+          {selectedCategory &&
+            products[selectedCategory]?.map((product) => (
+              <div key={product.computerProductId}>{renderCard(product)}</div>
+            ))}
+        </div>
+
+        {/* Henüz kategori seçilmediyse mesaj */}
+        {!selectedCategory && (
+          <div style={{ textAlign: "center", marginTop: "20px" }}>
+            <p>Lütfen bir kategori seçiniz.</p>
+          </div>
+        )}
+      </div>
+    </>
   );
 }
 

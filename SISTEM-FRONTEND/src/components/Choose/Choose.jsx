@@ -7,11 +7,25 @@ export default function Choose() {
   const [roleSelected, setRoleSelected] = useState(false);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    // Giriş yapmış bir kullanıcı var mı kontrol et
+    const userId = localStorage.getItem("userId");
+    if (!userId) {
+      navigate("/login");
+      return;
+    }
+  }, [navigate]);
+
   // Kullanıcı rolüne göre yönlendirme yap - sadece rol seçimi yapıldığında
   useEffect(() => {
     if (roleSelected && userRole) {
+      // Seçilen rolü localStorage'a kaydet
+      localStorage.setItem("userRole", userRole);
+
       if (userRole === "it_staff") {
         navigate("/ITWorker"); // IT çalışanları için özel sayfa
+      } else if (userRole === "guest_user") {
+        navigate("/guestpage"); // Misafir kullanıcılar için özel sayfa
       } else {
         navigate("/Nıtworker"); // Diğer kullanıcılar için genel sayfa
       }
@@ -59,6 +73,15 @@ export default function Choose() {
               onClick={() => handleRoleSelect("regular_user")}
             >
               IT Çalışanı Değilim
+            </button>
+
+            <button
+              className={`role-button ${
+                userRole === "guest_user" ? "active" : ""
+              }`}
+              onClick={() => handleRoleSelect("guest_user")}
+            >
+              Guest
             </button>
           </div>
 

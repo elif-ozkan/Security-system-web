@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Navbar from "../Login/Navbar";
 
 export default function IDS() {
   const [products, setProducts] = useState({});
@@ -16,6 +17,7 @@ export default function IDS() {
   }, []);
   return (
     <>
+      <Navbar />
       <style>
         {`
           .container {

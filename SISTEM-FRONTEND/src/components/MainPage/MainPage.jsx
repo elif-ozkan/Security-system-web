@@ -1,6 +1,7 @@
 import Blog from "./Blog";
 import States from "./States";
 import "./MainPage.css";
+import Navbar from "../Login/Navbar";
 
 export default function ManinPage() {
   return (
@@ -10,6 +11,7 @@ export default function ManinPage() {
         <div>
           <Blog />
           <States />
+          <Navbar />
         </div>
       </div>
     </>

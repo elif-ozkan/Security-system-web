@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./Product.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import Navbar from "../Login/Navbar";
 
 export default function Products() {
   const categories = [
@@ -48,49 +49,52 @@ export default function Products() {
   }, [selectedCategory]);
 
   return (
-    <div className="container">
-      <h2>Ürün Listesi</h2>
+    <>
+      <Navbar />
+      <div className="container">
+        <h2>Ürün Listesi</h2>
 
-      {/* Kategori Seçimi */}
-      <div className="form-group">
-        <label htmlFor="category">Kategori Seçin:</label>
-        <select
-          id="category"
-          value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e.target.value)}
-        >
-          {categories.map((category) => (
-            <option key={category.id} value={category.id}>
-              {category.name}
-            </option>
-          ))}
-        </select>
-      </div>
+        {/* Kategori Seçimi */}
+        <div className="form-group">
+          <label htmlFor="category">Kategori Seçin:</label>
+          <select
+            id="category"
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+          >
+            {categories.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.name}
+              </option>
+            ))}
+          </select>
+        </div>
 
-      {/* Ürün Listesi */}
-      <div className="product-list">
-        {loading ? (
-          <p>Yükleniyor...</p>
-        ) : products.length === 0 ? (
-          <p>Ürün bulunamadı.</p>
-        ) : (
-          products.map((product) => (
-            <div key={product.id} className="product-card">
-              <Link
-                to={`/product/${product.id}`}
-                className="product-card"
-                key={product.id}
-              >
-                <img
-                  src={product.img || "path_to_default_image.jpg"}
-                  alt={product.name}
-                />
-                <h3>{product.name}</h3>
-              </Link>
-            </div>
-          ))
-        )}
+        {/* Ürün Listesi */}
+        <div className="product-list">
+          {loading ? (
+            <p>Yükleniyor...</p>
+          ) : products.length === 0 ? (
+            <p>Ürün bulunamadı.</p>
+          ) : (
+            products.map((product) => (
+              <div key={product.id} className="product-card">
+                <Link
+                  to={`/product/${product.id}`}
+                  className="product-card"
+                  key={product.id}
+                >
+                  <img
+                    src={product.img || "path_to_default_image.jpg"}
+                    alt={product.name}
+                  />
+                  <h3>{product.name}</h3>
+                </Link>
+              </div>
+            ))
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }

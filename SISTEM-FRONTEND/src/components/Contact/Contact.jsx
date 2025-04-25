@@ -1,9 +1,11 @@
 import React from "react";
 import "./Contact.css";
+import Navbar from "../Login/Navbar";
 
 export default function Contact() {
   return (
     <>
+      <Navbar />
       <h1 className="contact-title">İletişim Formu</h1>
 
       <div className="mb-5">

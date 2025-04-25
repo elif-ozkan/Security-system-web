@@ -1,9 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Navbar from "../Login/Navbar";
 
 export default function ITWorker() {
   return (
     <>
+      <Navbar />
       <style>
         {`
           body {

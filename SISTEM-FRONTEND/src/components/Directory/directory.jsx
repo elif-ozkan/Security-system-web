@@ -1,8 +1,10 @@
 import React from "react";
+import Navbar from "../Login/Navbar";
 
 export default function Directory() {
   return (
     <>
+      <Navbar />
       <style>
         {`
           /* Genel Stil Ayarları */

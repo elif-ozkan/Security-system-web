@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./DataProduct.css";
+import Navbar from "../Login/Navbar";
 
 export default function DataPassword() {
   const [dataProducts, setProducts] = useState([]);
@@ -20,6 +21,7 @@ export default function DataPassword() {
 
   return (
     <>
+      <Navbar />
       <div className="container">
         <div className="title-container">Veri Şifreleme Ürünleri</div>
         <div className="grid-container">
