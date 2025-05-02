@@ -65,6 +65,7 @@ function App() {
           <Route path="/login/createaccount" element={<CreateAccount />} />
           <Route path="/guestpage" element={<GuestPage />} />
           <Route path="/user/:id" element={<UserPage />} />
+          <Route path="/user/:id/product/:productId" element={<UserPage />} />
         </Routes>
         {/*<MainPage />*/}
       </Router>
