@@ -12,7 +12,6 @@ namespace WebApplication1.Controllers
     public class SecurityProductController : ControllerBase
     {
         private readonly SecurityProductService _securityProductService;
-        
 
         public SecurityProductController(SecurityProductService securityProductService)
         {
@@ -57,7 +56,7 @@ namespace WebApplication1.Controllers
         [HttpPut("{id:int}")]
         public async Task<ActionResult<SecurityProducts>> UpdateSecurityProduct(int id, SecurityProducts securityProduct)
         {
-            if (id != securityProduct.SecurityProductId)
+            if (id != securityProduct.SecurityProductId)  
             {
                 return BadRequest("Ürün ID'si eşleşmiyor."); // 400 Bad Request döner
             }
@@ -84,12 +83,13 @@ namespace WebApplication1.Controllers
             await _securityProductService.DeleteSecurityProductsAsync(id);
             return NoContent(); // 204 No Content döner, başarılı bir silme işlemi sonrası içerik yok
         }
-        //[HttpGet("grouped-by-type")]
-        //public async Task<ActionResult<List<SecurityProductViewModel>>> GetGroupedProducts()
-        //{
-           //var result = await _securityProductService.GetSecurityProductsByTypeAsync();
-           //return Ok(result);
-        //}
+        [HttpGet("grouped-by-type")]
+        public async Task<ActionResult<List<SecurityProductViewModel>>> GetGroupedProducts()
+        {
+            var result = await _securityProductService.GetSecurityProductsByTypeAsync();
+            return Ok(result);
+        }
+
     }
 }
 

@@ -54,6 +54,7 @@ function CreateAccount() {
 
         // Kullanıcı rolünü localStorage'a kaydet
         localStorage.setItem("userRole", defaultRole);
+        localStorage.setItem("user name", formData.name);
 
         // Kullanıcıyı UserPage'e yönlendir
         navigate(`/user/${result.userId}`);

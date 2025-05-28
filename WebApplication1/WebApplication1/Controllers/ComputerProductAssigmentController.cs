@@ -17,11 +17,21 @@ namespace WebApplication1.Controllers
         }
         //Kullanıcının tüm bilgisayar siparişlerini getir
         [HttpGet]
-
-        public async Task<ActionResult<List<ComputerProductAssigments>>> GetAllProductAssigmentAsync(ComputerProductAssigments computerProductAssigment)
+        public async Task<ActionResult<List<ComputerProductAssigments>>> GetAllProductAssigmentAsync()
         {
-            await _service.GetAllAssigmentAsync();
-            return Ok(computerProductAssigment);
+            var assignments = await _service.GetAllAssigmentAsync();
+
+            // Döngüsel referansı önlemek için sadece gerekli alanları seçiyoruz
+            var result = assignments.Select(x => new
+            {
+                x.AssignmentId,
+                x.AssignmentDate,
+                x.ReturnDate,
+                ComputerProductName = x.ComputerProduct.Name, // ProductName bilgisini alıyoruz
+                UserFullName = x.User.Name // Kullanıcının tam adını alıyoruz
+            }).ToList();
+
+            return Ok(result);
         }
 
         // ID'ye göre sipariş bilgisayar ürünü getir

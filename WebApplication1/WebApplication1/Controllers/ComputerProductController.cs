@@ -90,7 +90,6 @@ namespace WebApplication1.Controllers
             {
                 // Hata günlüğü için log ekleyebilirsiniz
                 return StatusCode(500, "Ürün güncellenirken bir hata oluştu.");
-                
             }
         }
 
@@ -114,14 +113,14 @@ namespace WebApplication1.Controllers
                 // Hata günlüğü için log ekleyebilirsiniz
                 return StatusCode(500, "Ürün silinirken bir hata oluştu.");
             }
+           
         }
         [HttpGet("grouped-by-type")]
-       public async Task<ActionResult<List<ComputerProductViewModel>>> GetGroupedProducts()
-      {
-    var result = await _computerProductService.GetAllComputerProductsAsync();
-    return Ok(result);
-      }
-
+        public async Task<ActionResult<List<ComputerProductViewModel>>> GetGroupedProducts()
+        {
+            var result = await _computerProductService.GetAllComputerProductsAsync();
+            return Ok(result);
+        }
     }
 }
 

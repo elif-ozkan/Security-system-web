@@ -1,0 +1,50 @@
+﻿@page
+@model WebApplication1.Pages.RequestProductModel
+@{
+    ViewData["Title"] = "Ürün Talep Et";
+ }
+
+<h2>Ürün Talep Formu</h2>
+
+<form method="post">
+    <div>
+        <label>Kullanıcı:</label>
+        <select asp-for="SelectedUserId" asp-items="Model.UserList">
+            <option value="">Kullanıcı Seç</option>
+        </select>
+    </div>
+
+    <div>
+        <label>Bilgisayar Ürünü:</label>
+        <select asp-for="SelectedComputerProductId" asp-items="Model.ComputerProductList">
+            <option value="">Seçmeyebilirsin</option>
+        </select>
+    </div>
+
+    <div>
+        <label>Güvenlik Ürünü:</label>
+        <select asp-for="SelectedSecurityProductId" asp-items="Model.SecurityProductList">
+            <option value="">Seçmeyebilirsin</option>
+        </select>
+    </div>
+
+    <div>
+        <label>Talep Türü:</label>
+        <select asp-for="RequestType">
+            <option value="Yeni Talep">Yeni Talep</option>
+            <option value="İade Talebi">İade Talebi</option>
+        </select>
+    </div>
+
+    <div>
+        <label>Beklenen İade Tarihi:</label>
+        <input asp-for="RequestedReturnDate" type="date" />
+    </div>
+
+    <button type="submit">Talep Gönder</button>
+</form>
+
+@if (!string.IsNullOrEmpty(Model.Message))
+{
+    <p>@Model.Message</p>
+}

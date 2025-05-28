@@ -32,6 +32,33 @@ builder.Services.AddScoped<ComputerProductAssigmentRepository>();
 builder.Services.AddScoped<ComputerProductAssigmentService>(); 
 builder.Services.AddScoped<AdminRepository>();
 builder.Services.AddScoped<AdminService>();
+builder.Services.AddScoped<AssignmentRepository>();
+builder.Services.AddScoped<AssignmentService>();
+builder.Services.AddScoped<AssigmentRequestRepository>();
+builder.Services.AddScoped<AssigmentRequestService>();
+
+// Session servisi eklendi
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
+// Authentication (Cookie) yapýlandýrmasý
+builder.Services.AddAuthentication("MyCookieAuth")
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Login/Index"; // Giriþ sayfasý
+        options.LogoutPath = "/Login/Logout"; // Çýkýþ sayfasý
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(60); // Oturum süresi
+    });
+
+builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();  
+builder.Services.AddControllersWithViews();  
+
 
 //CORS Politikasý kýsmý
 builder.Services.AddCors(options =>
@@ -58,10 +85,14 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseRouting();
+app.UseSession();
 
+app.UseAuthentication();
 app.UseAuthorization();
 app.UseCors("AllowLocalhost"); //CORS Politikasý aktif
 
 app.MapControllers();
+
 
 app.Run();

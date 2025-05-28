@@ -4,18 +4,18 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using WebApplication1.ViewModels;
 using Microsoft.EntityFrameworkCore;
-
 namespace WebApplication1.Services
 {
     public class SecurityProductService
     {
         private readonly SecurityProductRepository _repository;
-        private readonly MyDbContext _dbcontext;
+        private readonly MyDbContext _dbContext;
 
-        public SecurityProductService(SecurityProductRepository repository, MyDbContext dbContext)
+        public SecurityProductService(SecurityProductRepository repository ,MyDbContext dbContext)
         {
             _repository = repository;
-            _dbcontext=dbContext;
+            _dbContext = dbContext;
+            
         }
 
         // Tüm güvenlik ürünlerini getir
@@ -59,15 +59,15 @@ namespace WebApplication1.Services
         {
             await _repository.DeleteSecurityProductsAsync(id);
         }
-        //Ürün tipine göre gruplama 
+        //Product-type yapısına göre gruplanma yapılması
         public async Task<List<SecurityProductViewModel>> GetSecurityProductsByTypeAsync()
         {
-           var result = await _dbcontext.SecurityProducts.GroupBy(sp => sp.ProductType).Select(g => new SecurityProductViewModel
-        {
-            ProductType = g.Key,
-             SecurityProducts = g.ToList()
-        }).ToListAsync();
-        return result;
+            var result = await _dbContext.SecurityProducts.GroupBy(sp => sp.ProductType).Select(g => new SecurityProductViewModel
+            {
+                ProductType = g.Key,
+                SecurityProducts = g.ToList()
+            }).ToListAsync();
+            return result;
         }
     }
 }

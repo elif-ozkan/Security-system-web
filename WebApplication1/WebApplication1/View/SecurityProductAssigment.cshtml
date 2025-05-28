@@ -1,19 +1,19 @@
-@model IEnumerable<WebApplication1.Models.ComputerProductAssigments>
+﻿@model IEnumerable<WebApplication1.Models.SecurityProductAssigments>
 
 @{
-    ViewBag.Title = "Computer Product Assignments";
+    ViewBag.Title = "Security Product Assignments";
 }
 
-<h2>Computer Product Assignments</h2>
+<h2>Security Product Assignments</h2>
 
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
-            <th>Assignment ID</th>
-            <th>Computer Product</th>
-            <th>User</th>
-            <th>Assignment Date</th>
-            <th>Return Date</th>
+            <th>AssigmentID</th>
+            <th>Security Product ID</th>
+            <th>User ID</th>
+            <th>Asigment Date</th>
+            <th>Return Date</th> 
         </tr>
     </thead>
     <tbody>
@@ -21,7 +21,7 @@
         {
             <tr>
                 <td>@assignment.AssignmentId</td>
-                <td>@assignment.ComputerProduct?.Name ?? "—"</td>
+                <td>@assignment.SecurityProduct?.Name ?? "—"</td>
                 <td>@assignment.User?.Name ?? "—"</td>
                 <td>@assignment.AssignmentDate.ToString("yyyy-MM-dd")</td>
                 <td>@(assignment.ReturnDate?.ToString("yyyy-MM-dd") ?? "—")</td>

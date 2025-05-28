@@ -3430,11 +3430,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\elifo\\Downloads\\WebApplication1\\WebApplication1\\WebApplication1.csproj",
+      "projectUniqueName": "C:\\Users\\elifo\\source\\repos\\elif-ozkan\\Security-system-web\\WebApplication1\\WebApplication1\\WebApplication1.csproj",
       "projectName": "WebApplication1",
-      "projectPath": "C:\\Users\\elifo\\Downloads\\WebApplication1\\WebApplication1\\WebApplication1.csproj",
+      "projectPath": "C:\\Users\\elifo\\source\\repos\\elif-ozkan\\Security-system-web\\WebApplication1\\WebApplication1\\WebApplication1.csproj",
       "packagesPath": "C:\\Users\\elifo\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\elifo\\Downloads\\WebApplication1\\WebApplication1\\obj\\",
+      "outputPath": "C:\\Users\\elifo\\source\\repos\\elif-ozkan\\Security-system-web\\WebApplication1\\WebApplication1\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\elifo\\AppData\\Roaming\\NuGet\\NuGet.Config",
